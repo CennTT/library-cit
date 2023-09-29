@@ -1,8 +1,4 @@
 from app import app
-from flask_sqlalchemy import SQLAlchemy
-
-# Configure Flask-SQLAlchemy
-db = SQLAlchemy(app)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
