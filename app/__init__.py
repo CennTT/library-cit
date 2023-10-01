@@ -4,8 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 # Create a Flask application instance
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:127.0.0.1/library'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@127.0.0.1/library'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'my-secret-key'
+
+db = SQLAlchemy(app)
+db.init_app(app)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
