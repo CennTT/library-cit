@@ -135,10 +135,10 @@ def edit_review(title, book_id):
 @app.route("/deposit")
 def printer_balance():
     if 'logged_in' not in session:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     if not session['logged_in']:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     id = session.get('nim')
     
