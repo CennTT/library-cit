@@ -22,7 +22,7 @@ db.init_app(app)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     elif request.method == 'POST':
         nim = request.form['nim']
         password = request.form['password']
@@ -31,10 +31,10 @@ def login():
         print(user)
 
         if user is None:
-            return render_template('nonadmin/login_nonadmin.html', error='Invalid username or password.')
+            return render_template('nonadmin/login.html', error='Invalid username or password.')
 
         if user.password != password:
-            return render_template('nonadmin/login_nonadmin.html', error='Invalid username or password.')
+            return render_template('nonadmin/login.html', error='Invalid username or password.')
 
         session['logged_in'] = True
         session['name'] = user.name
@@ -52,10 +52,10 @@ def logout():
 @app.route("/book")
 def homepage():
     if 'logged_in' not in session:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     if not session['logged_in']:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     books = Book.query.all()
 
@@ -64,10 +64,10 @@ def homepage():
 @app.route("/book/<path:title>/<int:id>")
 def book_details(title, id):
     if 'logged_in' not in session:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     if not session['logged_in']:
-        return render_template('nonadmin/login_nonadmin.html')
+        return render_template('nonadmin/login.html')
     
     book = Book.query.get(id)
 
