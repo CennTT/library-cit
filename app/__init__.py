@@ -9,7 +9,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, B
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 import secrets
-from models import db, User, Book, RatingReview
+from models import db, User, Book, RatingReview, PrinterBalance
 
 app = Flask(__name__)
 
@@ -99,3 +99,15 @@ def book_details(title, id):
     )
 
     return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews)
+
+@app.route("/deposit/<int:id>")
+def homepage(id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login_nonadmin.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login_nonadmin.html')
+    
+    printer_balance = PrinterBalance.query.get(id)
+
+    return render_template('nonadmin/deposit.html', printer_balance=printer_balance)
