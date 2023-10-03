@@ -9,7 +9,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, B
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 import secrets
-from models import db, User, Book, RatingReview, PrinterBalance
+from models import db, User, Book, RatingReview, PrinterBalance, Goods
 
 app = Flask(__name__)
 
@@ -105,7 +105,6 @@ def book_details(title, id):
     print(ratings_reviews[1])
     return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review)
 
-
 @app.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
 def edit_review(title, book_id):
     if 'logged_in' not in session:
@@ -130,8 +129,6 @@ def edit_review(title, book_id):
 
     return redirect(url_for('book_details', title=title, id=book_id))
 
-
-
 @app.route("/deposit")
 def printer_balance():
     if 'logged_in' not in session:
@@ -145,3 +142,15 @@ def printer_balance():
     # printer_balance = PrinterBalance.query.get(id)
     # return render_template('nonadmin/deposit.html', printer_balance=printer_balance)
     return render_template('nonadmin/deposit.html')
+
+@app.route("/goods")
+def goods_details():
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    goods = Goods.query.all()
+
+    return render_template('nonadmin/goods.html', goods=goods)
