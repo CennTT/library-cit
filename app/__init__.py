@@ -114,24 +114,20 @@ def edit_review(title, book_id):
     if not session['logged_in']:
         return render_template('nonadmin/login.html')
 
-    # Get the user's review for the specified book
     user_review = RatingReview.query.filter_by(
         user_id=session.get('nim'),
         book_id=book_id
     ).first()
 
     if request.method == "POST":
-        # Update the review based on the form data
         new_rating = request.form.get("rating")
         new_review = request.form.get("review")
 
-        # Update the review in the database
         if user_review:
             user_review.rating = new_rating
             user_review.review = new_review
             db.session.commit()
 
-    # Redirect back to the book details page
     return redirect(url_for('book_details', title=title, id=book_id))
 
 
