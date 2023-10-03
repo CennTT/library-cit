@@ -1,68 +1,36 @@
-{% extends "nonadmin/test.html" %}
-{% block body %}
-    <div class="main-container d-flex">
-        <div class="sidebar bg-danger" id="side_nav">
-            <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
-                <h2 class="fs-4"><span class="text-white">Library CIT</span></h2>
-                <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fal fa-stream"></i></button>
-            </div>
-            <ul class="list-unstyled px-2">
-                <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book pe-2"></i> Daftar Buku</a></li>
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-hand-holding-dollar pe-2"></i> Deposit Saldo</a></li>
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-cart-shopping pe-2"></i> Peminjaman Barang</a></li>
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-people-roof pe-2"></i> Reservasi Ruangan</a></li>
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-file-circle-question pe-2"></i> Tata Cara</a></li>
-            </ul>
+{% extends "nonadmin/test.html" %} {% block body %}
 
-            <ul class="list-unstyled px-2">
-                <li class=""><a href='/logout' class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-            </ul>
-        </div>
-        <div class="content">
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand">Perpustakaan CIT</a>
-                    <form class="d-flex" role="search">
-                      <input class="form-control me-2 border-danger" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
-                </div>
-            </nav>
-
-            <div class="books-display-content px-3 pt-4">
-                <div class="container py-5">
-                    <h2 class="text-center pb-3">Daftar Buku</h2>
-                    {% if books %}
-                    {% for book in books %}
-                    <div class="row row-cols-1 row-cols-md-4 g-4 py-2">
-                        <div class="col">
-                            <div id="{{ book.book_id }}" class="card" >
-                                <img src="{{ url_for('static', filename='images/createthumb.jpeg') }}" class="card-img-top w-50 mx-auto d-block pt-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ book.title }}</h5>
-                                    <p class="card-text text-danger">{{ book.writer }}</p>
-                                </div>
-                                <div class="mb-5 d-flex justify-content-around">
-                                    <h4 class="text-success">3.33/5</h4>
-                                    <a href="{{ url_for('book_details', title=book.title, id=book.book_id) }}">
-                                        <button class="btn btn-outline-warning rounded-pill">Review</button>
-                                    </a>                        
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
-                        <!-- <a href="{{ url_for('book_details', title=book.title, id=book.book_id) }}">
-                            <div id="{{ book.book_id }}" class="book-info">
-                                <h3>{{ book.title }}</h3>
-                                <h5>{{ book.writer }}</h5>
-                            </div>
-                        </a> -->
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-
-            </div>
-        </div>
-    </div>
-{% endblock %}
+<div class="books-display-content px-3 pt-4">
+	<div class="container py-5">
+		<h2 class="text-center pb-3">Daftar Buku</h2>
+		{% if books %} {% for book in books %}
+		<div class="row row-cols-1 row-cols-md-4 g-4 py-2">
+			<div class="col">
+				<div id="{{ book.book_id }}" class="card">
+					<img
+						src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
+						class="card-img-top w-50 mx-auto d-block pt-3"
+					/>
+					<div class="card-body">
+						<h5 class="card-title">{{ book.title }}</h5>
+						<p class="card-text text-danger">{{ book.writer }}</p>
+					</div>
+					<div class="mb-5 d-flex justify-content-around">
+						<h4 class="text-success">3.33/5</h4>
+						<a
+							href="{{ url_for('book_details', title=book.title, id=book.book_id) }}"
+						>
+							<button
+								class="btn btn-outline-warning rounded-pill"
+							>
+								Review
+							</button>
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %} {% endif %}
+		</div>
+	</div>
+	{% endblock %}
+</div>

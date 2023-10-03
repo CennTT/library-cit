@@ -1,103 +1,44 @@
 {% extends "nonadmin/test.html" %} {% block body %}
 
-<div class="main-container d-flex">
-	<div class="sidebar bg-danger" id="side_nav">
-		<div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
-			<h2 class="fs-4"><span class="text-white">Library CIT</span></h2>
-			<button
-				class="btn d-md-none d-block close-btn px-1 py-0 text-white"
-			>
-				<i class="fal fa-stream"></i>
-			</button>
+<div class="books-display-content px-3 pt-4">
+	<div class="book-info d-flex bg-light py-3 px-3">
+		{% if book %}
+		<img
+			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
+			class="rounded"
+		/>
+		<div class="book-desc col-md-10 ps-4">
+			<h3 class="text-success">{{ book.title }}</h3>
+			<p class="text-danger">Writer: {{ book.writer }}</p>
+			<p>Description: {{ book.description }}</p>
 		</div>
-		<ul class="list-unstyled px-2">
-			<li class="active">
-				<a href="#" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-book pe-2"></i> Daftar Buku</a
-				>
-			</li>
-			<li class="">
-				<a href="#" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-hand-holding-dollar pe-2"></i>
-					Deposit Saldo</a
-				>
-			</li>
-			<li class="">
-				<a href="#" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-cart-shopping pe-2"></i> Peminjaman
-					Barang</a
-				>
-			</li>
-			<li class="">
-				<a href="#" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-people-roof pe-2"></i> Reservasi
-					Ruangan</a
-				>
-			</li>
-			<li class="">
-				<a href="#" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-file-circle-question pe-2"></i> Tata
-					Cara</a
-				>
-			</li>
-		</ul>
-
-		<ul class="list-unstyled px-2">
-			<li class="">
-				<a href="/logout" class="text-decoration-none px-3 py-2 d-block"
-					><i class="fa-solid fa-right-from-bracket"></i> Logout</a
-				>
-			</li>
-		</ul>
 	</div>
+	<strong>Total Rating: </strong> {{ average_rate }}
 
-	<div class="content">
-		<nav class="navbar navbar-expand-md navbar-light bg-light">
-			<div class="container-fluid">
-				<a class="navbar-brand">Perpustakaan CIT</a>
-			</div>
-		</nav>
-		<div class="books-display-content px-3 pt-4">
-			<div class="book-info d-flex bg-light py-3 px-3">
-				{% if book %}
-				<img
-					src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-					class="rounded"
-				/>
-				<div class="book-desc col-md-10 ps-4">
-					<h3 class="text-success">{{ book.title }}</h3>
-					<p class="text-danger">Writer: {{ book.writer }}</p>
-					<p>Description: {{ book.description }}</p>
-				</div>
-			</div>
-			<strong>Total Rating: </strong> {{ average_rate }}
-
-			<h3>Rating and Reviews:</h3>
-			<ul>
-				{% for rating_review in ratings_reviews %}
-				<li>
-					<strong>Rating:</strong> {{ rating_review[0].rating }}
-					<br />
-					<strong>Review:</strong> {{ rating_review[0].review }}
-					<br />
-					<strong>Written by:</strong> {{ rating_review[1] }}
-				</li>
-				{% endfor %}
-			</ul>
-			{% else %}
-			<p>Book not found.</p>
-			{% endif %}
-		</div>
-		<form method="POST" action="/review-book/{{ book_id }}">
-			<label for="rating">Rating:</label>
-			<input type="number" name="rating" id="rating" />
-
-			<label for="review">Review:</label>
-			<textarea name="review" id="review"></textarea>
-
-			<button type="submit">Submit Review</button>
-		</form>
-	</div>
-
-	{% endblock %}
+	<h3>Rating and Reviews:</h3>
+	<ul>
+		{% for rating_review in ratings_reviews %}
+		<li>
+			<strong>Rating:</strong> {{ rating_review[0].rating }}
+			<br />
+			<strong>Review:</strong> {{ rating_review[0].review }}
+			<br />
+			<strong>Written by:</strong> {{ rating_review[1] }}
+		</li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>Book not found.</p>
+	{% endif %}
 </div>
+<form method="POST" action="/review-book/{{ book_id }}">
+	<label for="rating">Rating:</label>
+	<input type="number" name="rating" id="rating" />
+
+	<label for="review">Review:</label>
+	<textarea name="review" id="review"></textarea>
+
+	<button type="submit">Submit Review</button>
+</form>
+
+{% endblock %}

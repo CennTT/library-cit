@@ -100,14 +100,16 @@ def book_details(title, id):
 
     return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews)
 
-@app.route("/deposit/<int:id>")
-def homepage(id):
+@app.route("/deposit")
+def printer_balance():
     if 'logged_in' not in session:
         return render_template('nonadmin/login_nonadmin.html')
     
     if not session['logged_in']:
         return render_template('nonadmin/login_nonadmin.html')
     
-    printer_balance = PrinterBalance.query.get(id)
-
-    return render_template('nonadmin/deposit.html', printer_balance=printer_balance)
+    id = session.get('nim')
+    
+    # printer_balance = PrinterBalance.query.get(id)
+    # return render_template('nonadmin/deposit.html', printer_balance=printer_balance)
+    return render_template('nonadmin/deposit.html')
