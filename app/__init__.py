@@ -42,6 +42,7 @@ def login():
 
         session['logged_in'] = True
         session['name'] = user.name
+        session['nim'] = nim
         return redirect(url_for('homepage'))
 
 
