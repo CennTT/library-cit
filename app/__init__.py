@@ -9,7 +9,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, B
 from flask_sqlalchemy import SQLAlchemy
 import secrets
 from models import db, User
-# Create a Flask application instance
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@127.0.0.1/library'
@@ -25,21 +25,16 @@ def login():
     elif request.method == 'POST':
         nim = request.form['nim']
         password = request.form['password']
-        print(nim, password)
-        # Check if the user exists
+        
         user = User.query.filter_by(nomor_induk=nim).first()
         print(user)
 
         if user is None:
-            # The user does not exist
             return render_template('nonadmin/login_nonadmin.html', error='Invalid username or password.')
 
-        # Check if the password is correct
         if user.password != password:
-            # The password is incorrect
             return render_template('nonadmin/login_nonadmin.html', error='Invalid username or password.')
 
-        # The user is valid
         session['logged_in'] = True
         session['name'] = user.name
         return redirect(url_for('homepage'))
