@@ -1,3 +1,74 @@
 {% extends "nonadmin/test.html" %} {% block body %}
-hi
+<div class="main-container d-flex">
+    <div class="content">
+    <div class="deposit-saldo-content px-3 pt-4">
+        <h4 class="pb-4">Current Balance: Rp 10.000,-</h4>
+        <h5 class="pb-2">Payment History</h5>
+        <div class="container bg-white px-2 py-3 rounded">
+            <div class=" d-md-flex justify-content-md-end pb-2">
+                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Top up</button>
+            </div>                
+            <table class="table table-rounded">
+                <thead class="table-warning">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Deposited Balances</th>
+                    <th scope="col">Proof</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>01/10/2023</td>
+                    <td>10.000</td>
+                    <td><a href="">Open File</a></td>
+                    <td>Done</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>02/10/2023</td>
+                    <td>5.000</td>
+                    <td><a href="">Open File</a></td>
+                    <td>Pending</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>03/10/2023</td>
+                    <td>5.000</td>
+                    <td><a href="">Open File</a></td>
+                    <td>Pending</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Top Up Printer Balance</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                      <label for="amount" class="form-label">Input Amount (Rp)</label>
+                      <input type="number" class="form-control" id="amount">
+                    </div>
+                    <div class="mb-3">
+                      <label for="input-file" class="form-label">Proof</label>
+                      <input type="file" class="form-control" id="input-file">
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
+              <button type="button" class="btn btn-success">Top Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
 {% endblock %}
