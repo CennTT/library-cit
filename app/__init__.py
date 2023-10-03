@@ -19,6 +19,10 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 db.init_app(app)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return "404 Page Not Found", 404
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
