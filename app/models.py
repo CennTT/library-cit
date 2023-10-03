@@ -1,10 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
-from app import db
+
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
 
     nomor_induk = db.Column(db.String(9), primary_key=True)
+    name = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(64), nullable=False)
 

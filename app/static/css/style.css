@@ -1,80 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
 
-body{
-    font-family: 'Poppins', sans-serif;
-    background: #ececec;
+body {
+	font-family: "Poppins", sans-serif;
+	background: #ececec;
 }
 
 /*------------ Login ------------*/
 
-.box-area{
-    width: 930px;
+.box-area {
+	width: 930px;
 }
 
-.right-box{
-    padding: 40px 30px 40px 40px;
+.right-box {
+	padding: 40px 30px 40px 40px;
 }
 
-::placeholder{
-    font-size: 16px;
+::placeholder {
+	font-size: 16px;
 }
 
-.rounded-4{
-    border-radius: 20px;
+.rounded-4 {
+	border-radius: 20px;
 }
-.rounded-5{
-    border-radius: 30px;
+.rounded-5 {
+	border-radius: 30px;
 }
-
 
 /*------------ Side Nav ------------*/
-#side_nav{
-    min-width: 250px;
-    max-width: 250px;
-    transition: all 0.3s;
-   }
-   .content{
-      min-height: 100vh;
-      width: 100%;
-   }
-   hr.h-color{
-     background: #eee;
-   }
-   
-   .sidebar li.active{
-      background: #fcaf17;
-      border-radius: 8px;
-   }
-   
-   .sidebar li.active a, .sidebar li.active a:hover {
-    color: #000;
-   }
-   .sidebar li a{
-    color: #fff;
-   }
+#side_nav {
+	min-width: 250px;
+	max-width: 250px;
+	transition: all 0.3s;
+}
+.content {
+	min-height: 100vh;
+	width: 100%;
+}
+hr.h-color {
+	background: #eee;
+}
 
-   @media only screen and (max-width: 768px){
-    #side_nav{
-        margin-left: -250px;
-        position: absolute;
-        min-height: 100vh;
-        z-index: 1;
-     
-      }
-    #side_nav.active{
-    margin-left: 0;
-    }
+.sidebar li.active {
+	background: #fcaf17;
+	border-radius: 8px;
+}
 
-    .box-area{
-       margin: 0 10px;
+.sidebar li.active a,
+.sidebar li.active a:hover {
+	color: #000;
+}
+.sidebar li a {
+	color: #fff;
+}
 
-    }
-    .left-box{
-       height: 100px;
-       overflow: hidden;
-    }
-    .right-box{
-       padding: 20px;
-    }
+@media only screen and (max-width: 768px) {
+	#side_nav {
+		margin-left: -250px;
+		position: absolute;
+		min-height: 100vh;
+		z-index: 1;
+	}
+	#side_nav.active {
+		margin-left: 0;
+	}
 
+	.box-area {
+		margin: 0 10px;
+	}
+	.left-box {
+		height: 100px;
+		overflow: hidden;
+	}
+	.right-box {
+		padding: 20px;
+	}
 }
