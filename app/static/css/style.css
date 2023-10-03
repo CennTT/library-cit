@@ -53,6 +53,27 @@ hr.h-color {
 	color: #fff;
 }
 
+/*------------ Card ------------*/
+.card-img-top{
+    border-radius: 30px;
+    padding: 20px;
+    }
+    .card{
+        border-radius: 30px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    }
+    .card-body{
+        padding: 25px;
+        margin-top: -15px;
+    }
+    .btn-primary{
+        border-radius: 50px;
+        width: 120px;
+    }
+    .btn-primary:hover{
+        background-color: black;
+        border: none;
+    }
 @media only screen and (max-width: 768px) {
 	#side_nav {
 		margin-left: -250px;
