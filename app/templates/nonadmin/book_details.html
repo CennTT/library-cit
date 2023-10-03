@@ -12,33 +12,75 @@
 			<p class="text-danger">Writer: {{ book.writer }}</p>
 			<p>Description: {{ book.description }}</p>
 		</div>
+		{% endif %}
 	</div>
-	<strong>Total Rating: </strong> {{ average_rate }}
+</div>
 
-	<h3>Rating and Reviews:</h3>
-	<ul>
-		{% for rating_review in ratings_reviews %}
-		<li>
-			<strong>Rating:</strong> {{ rating_review[0].rating }}
-			<br />
-			<strong>Review:</strong> {{ rating_review[0].review }}
-			<br />
-			<strong>Written by:</strong> {{ rating_review[1] }}
-		</li>
-		{% endfor %}
-	</ul>
-	{% else %}
-	<p>Book not found.</p>
+<div class="personal-review">
+	<h4>Your Review:</h4>
+	{% if user_review %}
+	<div id="review-display">
+		<p>Rating: {{ user_review.rating }}</p>
+		<p>Review: {{ user_review.review }}</p>
+	</div>
+	<button id="review-edit-button">Edit</button>
+	<form
+		method="POST"
+		action="/edit-review/{{ book.title }}/{{ book.book_id }}"
+		id="edit-review-form"
+		style="display: none"
+	>
+		<label for="rating">Rating:</label>
+		<input
+			type="number"
+			name="rating"
+			id="rating"
+			value="{{ user_review.rating }}"
+		/>
+
+		<label for="review">Review:</label>
+		<textarea name="review" id="review">{{ user_review.review }}</textarea>
+
+		<button type="submit">Update Review</button>
+	</form>
+	<button id="review-cancel-button" style="display: none">Cancel</button>
 	{% endif %}
 </div>
-<form method="POST" action="/review-book/{{ book_id }}">
-	<label for="rating">Rating:</label>
-	<input type="number" name="rating" id="rating" />
 
-	<label for="review">Review:</label>
-	<textarea name="review" id="review"></textarea>
+<div class="all-reviews">
+	<h4>All Reviews:</h4>
+	{% for review in ratings_reviews %} {% if review.User.nomor_induk !=
+	session.get('nim') %}
+	<div class="review">
+		<p><strong>{{ review.User.name }}</strong></p>
+		<p>Rating: {{ review.RatingReview.rating }}</p>
+		<p>Review: {{ review.RatingReview.review }}</p>
+	</div>
+	{% endif %} {% endfor %}
+</div>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var reviewEditButton = document.getElementById("review-edit-button");
+		var reviewDisplay = document.getElementById("review-display");
+		var editReviewForm = document.getElementById("edit-review-form");
+		var reviewCancelButton = document.getElementById(
+			"review-cancel-button"
+		);
 
-	<button type="submit">Submit Review</button>
-</form>
+		reviewEditButton.addEventListener("click", function () {
+			reviewDisplay.style.display = "none";
+			editReviewForm.style.display = "block";
+			reviewEditButton.style.display = "none";
+			reviewCancelButton.style.display = "block";
+		});
+
+		reviewCancelButton.addEventListener("click", function () {
+			reviewDisplay.style.display = "block";
+			editReviewForm.style.display = "none";
+			reviewEditButton.style.display = "block";
+			reviewCancelButton.style.display = "none";
+		});
+	});
+</script>
 
 {% endblock %}

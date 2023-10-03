@@ -80,9 +80,9 @@ def book_details(title, id):
         return "Book not found", 404
 
     average_rate, num_reviews = (
-    db.session.query(func.avg(RatingReview.rating), func.count(RatingReview.id))
-    .filter_by(book_id=id)
-    .first()
+        db.session.query(func.avg(RatingReview.rating), func.count(RatingReview.id))
+        .filter_by(book_id=id)
+        .first()
     )
 
     if num_reviews is None:
@@ -90,15 +90,51 @@ def book_details(title, id):
 
     average_rate = float(average_rate) if average_rate is not None else 0.0
 
-    ratings_reviews = (
-        RatingReview.query
-        .filter_by(book_id=id)
-        .join(User)  
-        .add_columns(User.name)
-        .all()
-    )
+    # Retrieve the user_id from the session
+    user_id = session.get('nim')
 
-    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews)
+    # Query the specific user's review for the book
+    user_review = RatingReview.query.filter_by(book_id=id, user_id=user_id).first()
+
+    ratings_reviews = (
+    db.session.query(RatingReview, User) 
+    .filter_by(book_id=id)
+    .join(User)
+    .all()
+    )
+    print(ratings_reviews[1])
+    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review)
+
+
+@app.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
+def edit_review(title, book_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+
+    # Get the user's review for the specified book
+    user_review = RatingReview.query.filter_by(
+        user_id=session.get('nim'),
+        book_id=book_id
+    ).first()
+
+    if request.method == "POST":
+        # Update the review based on the form data
+        new_rating = request.form.get("rating")
+        new_review = request.form.get("review")
+
+        # Update the review in the database
+        if user_review:
+            user_review.rating = new_rating
+            user_review.review = new_review
+            db.session.commit()
+
+    # Redirect back to the book details page
+    return redirect(url_for('book_details', title=title, id=book_id))
+
+
 
 @app.route("/deposit")
 def printer_balance():
