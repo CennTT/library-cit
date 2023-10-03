@@ -7,8 +7,9 @@ sys.path.append(current_dir)
 
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 import secrets
-from models import db, User
+from models import db, User, Book, RatingReview
 
 app = Flask(__name__)
 
@@ -48,17 +49,42 @@ def logout():
 
 
 @app.route("/")
+@app.route("/book")
 def homepage():
     if 'logged_in' not in session:
         return render_template('nonadmin/login_nonadmin.html')
     
     if not session['logged_in']:
         return render_template('nonadmin/login_nonadmin.html')
-
-    return render_template('nonadmin/index.html')
-
-
-@app.route("/login-page")
-def login_page():
-    pass
     
+    books = Book.query.all()
+
+    return render_template('nonadmin/index.html', books=books)
+
+@app.route("/book/<path:title>/<int:id>")
+def book_details(title, id):
+    book = Book.query.get(id)
+
+    if not book:
+        return "Book not found", 404
+
+    average_rate, num_reviews = (
+    db.session.query(func.avg(RatingReview.rating), func.count(RatingReview.id))
+    .filter_by(book_id=id)
+    .first()
+    )
+
+    if num_reviews is None:
+        num_reviews = 0
+
+    average_rate = float(average_rate) if average_rate is not None else 0.0
+
+    ratings_reviews = (
+        RatingReview.query
+        .filter_by(book_id=id)
+        .join(User)  
+        .add_columns(User.name)
+        .all()
+    )
+
+    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews)

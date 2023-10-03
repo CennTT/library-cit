@@ -53,10 +53,16 @@
                 </nav>
     
                 <div class="dashboard-content px-3 pt-4">
-                    <h2 class="fs-5"> Dummy</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, totam? Sequi alias eveniet ut quas
-                        ullam delectus et quasi incidunt rem deserunt asperiores reiciendis assumenda doloremque provident,
-                        dolores aspernatur neque.</p>
+                    {% if books %}
+                    {% for book in books %}
+                    <a href="{{ url_for('book_details', title=book.title, id=book.book_id) }}">
+                        <div id="{{ book.book_id }}" class="book-info">
+                            <h3>{{ book.title }}</h3>
+                            <h5>{{ book.writer }}</h5>
+                        </div>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -1,0 +1,22 @@
+{% if book %}
+    <h2>{{ book.title }}</h2>
+    <p>Writer: {{ book.writer }}</p>
+    <p>Description: {{ book.description }}</p>
+
+    <strong>Total Rating: </strong> {{ average_rate }}
+
+    <h3>Rating and Reviews:</h3>
+    <ul>
+        {% for rating_review in ratings_reviews %}
+        <li>
+            <strong>Rating:</strong> {{ rating_review[0].rating }}
+            <br>
+            <strong>Review:</strong> {{ rating_review[0].review }}
+            <br>
+            <strong>Written by:</strong> {{ rating_review[1] }}  
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Book not found.</p>
+{% endif %}

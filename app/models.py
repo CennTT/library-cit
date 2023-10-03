@@ -31,8 +31,6 @@ class Book(db.Model):
     title = db.Column(db.String(255), nullable=False)
     writer = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    rating = db.Column(db.Float, nullable=True)
-    review = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
         return f'<Book book_id={self.book_id}>'
@@ -135,3 +133,20 @@ class BorrowingRooms(db.Model):
 
     def __repr__(self):
         return f'<BorrowingRooms id={self.id}>'
+    
+
+class RatingReview(db.Model):
+    __tablename__ = 'rating_reviews'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(9), db.ForeignKey('users.nomor_induk'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'), nullable=False)
+    rating = db.Column(db.Float, nullable=True)
+    review = db.Column(db.Text, nullable=True)
+
+    # Define relationships
+    user = db.relationship('User', backref='ratings_reviews')
+    book = db.relationship('Book', backref='ratings_reviews')
+
+    def __repr__(self):
+        return f'<RatingReview id={self.id}>'
