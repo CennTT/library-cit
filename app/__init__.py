@@ -63,6 +63,12 @@ def homepage():
 
 @app.route("/book/<path:title>/<int:id>")
 def book_details(title, id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login_nonadmin.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login_nonadmin.html')
+    
     book = Book.query.get(id)
 
     if not book:
