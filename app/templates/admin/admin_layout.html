@@ -26,7 +26,7 @@
 					class="header-box px-2 pt-3 pb-4 d-flex justify-content-between"
 				>
 					<h2 class="fs-4">
-						<span class="text-white">Library CIT</span>
+						<span class="text-white">Admin-Library CIT</span>
 					</h2>
 					<button
 						class="btn d-md-none d-block close-btn px-1 py-0 text-white"
@@ -37,46 +37,27 @@
 				<ul class="list-unstyled px-2">
 					<li class="{{ 'active' if request.path == '/book' else '' }}">
 						<a
-							href="/book"
+							href="/admin-book"
 							class="text-decoration-none px-3 py-2 d-block"
-							><i class="fa-solid fa-book pe-2"></i> Daftar
-							Buku</a
+							><i class="fa-solid fa-book pe-2"></i> Books</a
 						>
 					</li>
 					<li class="{{ 'active' if request.path == '/deposit' else '' }}">
 						<a
-							href="/deposit"
+							href="/admin-deposit"
 							class="text-decoration-none px-3 py-2 d-block"
 							><i
 								class="fa-solid fa-hand-holding-dollar pe-2"
 							></i>
-							Deposit Saldo</a
+							Deposit</a
 						>
 					</li>
 					<li class="{{ 'active' if request.path == '/goods' else '' }}">
 						<a
-							href="/goods"
+							href="/admin-goods"
 							class="text-decoration-none px-3 py-2 d-block"
 							><i class="fa-solid fa-cart-shopping pe-2"></i>
-							Peminjaman Barang</a
-						>
-					</li>
-					<li class="{{ 'active' if request.path == '/rooms' else '' }}">
-						<a
-							href="/rooms"
-							class="text-decoration-none px-3 py-2 d-block"
-							><i class="fa-solid fa-people-roof pe-2"></i>
-							Reservasi Ruangan</a
-						>
-					</li>
-					<li class="{{ 'active' if request.path == '/procedures' else '' }}">
-						<a
-							href="/procedures"
-							class="text-decoration-none px-3 py-2 d-block"
-							><i
-								class="fa-solid fa-file-circle-question pe-2"
-							></i>
-							Tata Cara</a
+							Goods & Rooms</a
 						>
 					</li>
 				</ul>
