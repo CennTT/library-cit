@@ -1,3 +1,4 @@
+import base64
 import sys
 import os
 
@@ -164,6 +165,9 @@ def rooms_details():
         return render_template('nonadmin/login.html')
     
     rooms = Rooms.query.all()
+    for room in rooms:
+        if room.image:
+            room.image = base64.b64encode(room.image).decode('utf-8')
 
     return render_template('nonadmin/rooms.html', rooms=rooms)
 
