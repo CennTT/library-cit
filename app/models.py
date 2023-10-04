@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from datetime import datetime
+from sqlalchemy import LargeBinary
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -64,21 +65,23 @@ class PrinterBalance(db.Model):
         return f'<PrinterBalance nomor_induk={self.nomor_induk}>'
     
 
+
 class PrinterBalanceDeposit(db.Model):
     __tablename__ = 'printer_balance_deposits'
 
     deposit_id = db.Column(db.Integer, primary_key=True)
     nomor_induk = db.Column(db.String(64), db.ForeignKey('users.nomor_induk'), nullable=False)
     deposited_balance = db.Column(db.Integer, nullable=False)
-    proof = db.Column(db.String(255), nullable=True)
+    proof = db.Column(LargeBinary, nullable=True) 
     status = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     user = db.relationship('User', backref='printer_balance_deposits')
 
     def __repr__(self):
         return f'<PrinterBalanceDeposit deposit_id={self.deposit_id}>'
-    
 
+    
 class Goods(db.Model):
     __tablename__ = 'goods'
 
