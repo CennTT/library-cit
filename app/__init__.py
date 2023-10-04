@@ -155,7 +155,7 @@ def goods_details():
 
     return render_template('nonadmin/goods.html', goods=goods)
 
-@app.route("/room")
+@app.route("/rooms")
 def rooms_details():
     if 'logged_in' not in session:
         return render_template('nonadmin/login.html')

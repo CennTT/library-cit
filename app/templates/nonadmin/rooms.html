@@ -1,0 +1,127 @@
+{% extends "nonadmin/test.html" %} {% block body %}
+<div class="container py-5">
+    <h2 class="text-center pt-5 pb-3">Rooms</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-2">
+        <div class="col">
+            <div class="card">
+                <img src="dc1.jpg" class="card-img-top mx-auto d-block pt-3" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Discussion Room 1</h5>
+                </div>
+                <div class="mb-5 d-flex justify-content-around">
+                    <h4 class="text-success">Available</h4>                        
+                    <button class="btn btn-outline-success rounded-pill" data-bs-toggle="modal" data-bs-target="#dc1Modal">Reserve</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <img src="dc1.jpg" class="card-img-top mx-auto d-block pt-3" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Discussion Room 2</h5>
+                </div>
+                <div class="mb-5 d-flex justify-content-around">
+                    <h4 class="text-success">Available</h4>                        
+                    <button class="btn btn-outline-success rounded-pill" data-bs-toggle="modal" data-bs-target="#dc2Modal">Reserve</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col">
+          <div class="card">
+              <img src="dc1.jpg" class="card-img-top mx-auto d-block pt-3" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title">Mini Theatre</h5>
+              </div>
+              <div class="mb-5 d-flex justify-content-around">
+                  <h4 class="text-success">Fully Booked</h4>                        
+                  <button class="btn btn-outline-success rounded-pill disabled" data-bs-toggle="modal" data-bs-target="#mtModal">Reserve</button>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dc1Modal" tabindex="-1" aria-labelledby="dc1ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="dc1ModalLabel">Discussion Room 1</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Start Time</label>
+                  <input type="time" class="form-control" id="amount">
+                </div>
+                <div class="mb-3">
+                  <label for="input-file" class="form-label">End Time</label>
+                  <input type="time" class="form-control" id="input-file">
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
+          <button type="button" class="btn btn-success">Reserve</button>
+        </div>5
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="dc2Modal" tabindex="-1" aria-labelledby="dc2ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="dc2ModalLabel">Discussion Room 2</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Start Time</label>
+                  <input type="time" class="form-control" id="amount">
+                </div>
+                <div class="mb-3">
+                  <label for="input-file" class="form-label">End Time</label>
+                  <input type="time" class="form-control" id="input-file">
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
+          <button type="button" class="btn btn-success">Reserve</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="mtModal" tabindex="-1" aria-labelledby="mtModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="mtModalLabel">Mini Theatre</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Start Time</label>
+                  <input type="time" class="form-control" id="amount">
+                </div>
+                <div class="mb-3">
+                  <label for="input-file" class="form-label">End Time</label>
+                  <input type="time" class="form-control" id="input-file">
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
+          <button type="button" class="btn btn-success">Reserve</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -61,17 +61,17 @@
 							Peminjaman Barang</a
 						>
 					</li>
-					<li class="">
+					<li class="{{ 'active' if request.path == '/rooms' else '' }}">
 						<a
-							href="#"
+							href="/rooms"
 							class="text-decoration-none px-3 py-2 d-block"
 							><i class="fa-solid fa-people-roof pe-2"></i>
 							Reservasi Ruangan</a
 						>
 					</li>
-					<li class="">
+					<li class="{{ 'active' if request.path == '/procedures' else '' }}">
 						<a
-							href="#"
+							href="/procedures"
 							class="text-decoration-none px-3 py-2 d-block"
 							><i
 								class="fa-solid fa-file-circle-question pe-2"
