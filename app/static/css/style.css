@@ -30,8 +30,8 @@ body {
 #side_nav {
 	min-width: 250px;
 	max-width: 250px;
-	transition: all 0.3s;
 }
+
 .content {
 	min-height: 100vh;
 	width: 100%;
@@ -41,13 +41,13 @@ hr.h-color {
 }
 
 .sidebar li.active {
-	background: #fcaf17;
-	border-radius: 8px;
+	border-left: 4px solid #fcaf17;	
+	background-color: rgba(252, 175, 23, 0.5);
 }
 
 .sidebar li.active a,
 .sidebar li.active a:hover {
-	color: #000;
+	color: #ffffff;
 }
 .sidebar li a {
 	color: #fff;
