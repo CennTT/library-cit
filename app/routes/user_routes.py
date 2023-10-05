@@ -16,7 +16,6 @@ def login():
         password = request.form['password']
         
         user = User.query.filter_by(nomor_induk=nim).first()
-        print(user)
 
         if user is None:
             return render_template('nonadmin/login.html', error='Invalid username or password.')
@@ -79,14 +78,12 @@ def book_details(title, id):
 
     # Query the specific user's review for the book
     user_review = RatingReview.query.filter_by(book_id=id, user_id=user_id).first()
-
     ratings_reviews = (
     db.session.query(RatingReview, User) 
     .filter_by(book_id=id)
     .join(User)
     .all()
     )
-    print(ratings_reviews[1])
     return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review)
 
 @user_bp.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
@@ -110,6 +107,30 @@ def edit_review(title, book_id):
             user_review.rating = new_rating
             user_review.review = new_review
             db.session.commit()
+
+    return redirect(url_for('user.book_details', title=title, id=book_id))
+
+@user_bp.route("/add-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
+def add_review(title, book_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    rating = request.form.get('rating')
+    review = request.form.get('review')
+    nim = session.get('nim')
+    review = RatingReview(
+        id = book_id,
+        user_id = nim,
+        book_id = book_id,
+        rating = rating,
+        review = review,
+    )
+    
+    db.session.add(review)
+    db.session.commit()
 
     return redirect(url_for('user.book_details', title=title, id=book_id))
 
