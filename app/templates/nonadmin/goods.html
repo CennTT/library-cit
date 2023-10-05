@@ -1,87 +1,95 @@
 {% extends "nonadmin/layout.html" %} {% block body %}
 <div class="container py-5">
-    <h2 class="text-center pt-5 pb-3">List of Items</h2>
-    <div class="row row-cols-1 row-cols-md-4 g-4 py-2">
-        <div class="col">
-            <div class="card">
-                <img src="keyboard.jpg" class="card-img-top w-50 mx-auto d-block pt-3" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Keyboard</h5>
-                </div>
-                <div class="mb-5 d-flex justify-content-around">
-                    <h4 class="text-success">Available</h4>                        
-                    <button class="btn btn-outline-success rounded-pill" data-bs-toggle="modal" data-bs-target="#keyboardModal">Borrow</button>
-                </div>
-            </div>
-        </div>
+	<h2 class="text-center pt-5 pb-3">List of Items</h2>
+	<div class="row row-cols-1 row-cols-md-4 g-4 py-2">
+		{% if goods %}{% for item in goods %}
+		<div class="col">
+			<div class="card">
+				<img
+					src="data:image/jepg;base64,{{ item.image }}"
+					class="card-img-top w-50 mx-auto d-block pt-3"
+					alt="{{item.name}}"
+				/>
+				<div class="card-body">
+					<h5 class="card-title">{{ item.name }}</h5>
+				</div>
+				<div class="mb-5 d-flex justify-content-around">
+					{% if item.status == 'Available' %}
+					<h4 class="text-success">Available</h4>
+					<button
+						class="btn btn-outline-success rounded-pill"
+						data-bs-toggle="modal"
+						data-bs-target="#{{item.name}}Modal"
+					>
+						Borrow
+					</button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
 
-        <div class="col">
-            <div class="card">
-                <img src="piano.png" class="card-img-top w-50 mx-auto d-block pt-3" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Piano</h5>
-                </div>
-                <div class="mb-5 d-flex justify-content-around">
-                    <h4 class="text-success">Available</h4>                        
-                    <button class="btn btn-outline-success rounded-pill" data-bs-toggle="modal" data-bs-target="#pianoModal">Borrow</button>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div
+			class="modal fade"
+			id="{{item.name}}Modal"
+			tabindex="-1"
+			aria-labelledby="{{item.name}}ModalLabel"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1
+							class="modal-title fs-5"
+							id="{{item.name}}ModalLabel"
+						>
+							{{item.name}}
+						</h1>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="amount" class="form-label"
+									>Borrow Date</label
+								>
+								<input
+									type="date"
+									class="form-control"
+									id="amount"
+								/>
+							</div>
+							<div class="mb-3">
+								<label for="input-file" class="form-label"
+									>Return Date</label
+								>
+								<input
+									type="date"
+									class="form-control"
+									id="input-file"
+								/>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-bs-dismiss="modal"
+						>
+							Close
+						</button>
+						<button type="button" class="btn btn-success">
+							Borrow
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}{% endif %} {% endblock %}
+	</div>
 </div>
-
-<div class="modal fade" id="keyboardModal" tabindex="-1" aria-labelledby="keyboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="keyboardModalLabel">Keyboard</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                  <label for="amount" class="form-label">Borrow Date</label>
-                  <input type="date" class="form-control" id="amount">
-                </div>
-                <div class="mb-3">
-                  <label for="input-file" class="form-label">Return Date</label>
-                  <input type="date" class="form-control" id="input-file">
-                </div>
-              </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
-          <button type="button" class="btn btn-success">Borrow</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="pianoModal" tabindex="-1" aria-labelledby="pianoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="pianoModalLabel">Piano</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                  <label for="amount" class="form-label">Borrow Date</label>
-                  <input type="date" class="form-control" id="amount">
-                </div>
-                <div class="mb-3">
-                  <label for="input-file" class="form-label">Return Date</label>
-                  <input type="date" class="form-control" id="input-file">
-                </div>
-              </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
-          <button type="button" class="btn btn-success">Borrow</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}

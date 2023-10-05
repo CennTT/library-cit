@@ -166,6 +166,9 @@ def goods_details():
         return render_template('nonadmin/login.html')
     
     goods = Goods.query.all()
+    for item in goods:
+        if item.image:
+            item.image = base64.b64encode(item.image).decode('utf-8')
 
     return render_template('nonadmin/goods.html', goods=goods)
 
