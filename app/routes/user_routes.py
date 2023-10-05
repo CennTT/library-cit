@@ -45,9 +45,18 @@ def homepage():
     if not session['logged_in']:
         return render_template('nonadmin/login.html')
     
-    books = Book.query.all()
+    books = Book.query.all() 
+    
+    average_ratings = {}
+    
+    for book in books:
+        average_rating = db.session.query(db.func.avg(RatingReview.rating)).filter_by(book_id=book.book_id).scalar()
 
-    return render_template('nonadmin/index.html', books=books)
+        average_rating = float(average_rating) if average_rating is not None else 0.0
+
+        average_ratings[book.book_id] = average_rating
+
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings)
 
 @user_bp.route("/book/<path:title>/<int:id>")
 def book_details(title, id):

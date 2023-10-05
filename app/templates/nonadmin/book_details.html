@@ -44,20 +44,6 @@
 		<button type="submit">Update Review</button>
 	</form>
 	<button id="review-cancel-button" style="display: none">Cancel</button>
-	{% else %}
-	<h4>Add Your Review:</h4>
-	<form
-		method="POST"
-		action="/add-review/{{ book.title }}/{{ book.book_id }}"
-	>
-		<label for="rating">Rating:</label>
-		<input type="number" name="rating" id="rating" />
-
-		<label for="review">Review:</label>
-		<textarea name="review"></textarea>
-
-		<button type="submit">Add Review</button>
-	</form>
 	{% endif %}
 </div>
 

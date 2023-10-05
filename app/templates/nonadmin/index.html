@@ -16,7 +16,7 @@
 						<p class="card-text text-danger">{{ book.writer }}</p>
 					</div>
 					<div class="mb-5 d-flex justify-content-around">
-						<h4 class="text-success">3.33/5</h4>
+						<h4 class="text-success">{{ average_ratings[book.book_id] }}/5</h4>
 						<a
 							href="{{ url_for('user.book_details', title=book.title, id=book.book_id) }}"
 						>
