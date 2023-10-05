@@ -1,4 +1,5 @@
 import base64
+import datetime
 from sqlalchemy import func
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
 from models import db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
@@ -152,6 +153,36 @@ def rooms_details():
             room.image = base64.b64encode(room.image).decode('utf-8')
 
     return render_template('nonadmin/rooms.html', rooms=rooms)
+
+
+@user_bp.route("/reserve_room/<int:room_id>", methods=["POST"])
+def reserve_room(room_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+
+    start_time = request.form.get("start_time")
+    end_time = request.form.get("end_time")
+    
+    user_id = session.get('nim')
+    today = datetime.date.today()
+    reservation = BorrowingRooms(
+        room_id=room_id,
+        borrowing_date=today,  
+        time_started=start_time,
+        time_ended=end_time,
+        nomor_induk=user_id,
+        status="Reserved", 
+    )
+
+    db.session.add(reservation)
+    db.session.commit()
+
+    return redirect(url_for('user.rooms_details')) 
+
+
 
 @user_bp.route("/procedures")
 def procedures():

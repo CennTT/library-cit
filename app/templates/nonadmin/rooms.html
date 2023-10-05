@@ -61,7 +61,11 @@
 						></button>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form
+							action="/reserve_room/{{ room.id }}"
+							method="POST"
+						>
+							<!-- Added form tag with method="POST" -->
 							<div class="mb-3">
 								<label for="startTime" class="form-label"
 									>Start Time</label
@@ -70,6 +74,7 @@
 									type="time"
 									class="form-control"
 									id="startTime"
+									name="start_time"
 								/>
 							</div>
 							<div class="mb-3">
@@ -80,21 +85,22 @@
 									type="time"
 									class="form-control"
 									id="endTime"
+									name="end_time"
 								/>
 							</div>
+							<div class="modal-footer">
+								<button
+									type="button"
+									class="btn btn-secondary"
+									data-bs-dismiss="modal"
+								>
+									Close
+								</button>
+								<button type="submit" class="btn btn-success">
+									Reserve
+								</button>
+							</div>
 						</form>
-					</div>
-					<div class="modal-footer">
-						<button
-							type="button"
-							class="btn btn-secondary"
-							data-bs-dismiss="modal"
-						>
-							Close
-						</button>
-						<button type="button" class="btn btn-success">
-							Reserve
-						</button>
 					</div>
 				</div>
 			</div>
