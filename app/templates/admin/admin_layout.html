@@ -35,14 +35,14 @@
 					</button>
 				</div>
 				<ul class="list-unstyled px-2">
-					<li class="{{ 'active' if request.path == '/book' else '' }}">
+					<li class="{{ 'active' if request.path == '/admin-book' else '' }}">
 						<a
 							href="/admin-book"
 							class="text-decoration-none px-3 py-2 d-block"
 							><i class="fa-solid fa-book pe-2"></i> Books</a
 						>
 					</li>
-					<li class="{{ 'active' if request.path == '/deposit' else '' }}">
+					<li class="{{ 'active' if request.path == '/amdin-deposit' else '' }}">
 						<a
 							href="/admin-deposit"
 							class="text-decoration-none px-3 py-2 d-block"
@@ -52,7 +52,7 @@
 							Deposit</a
 						>
 					</li>
-					<li class="{{ 'active' if request.path == '/goods' else '' }}">
+					<li class="{{ 'active' if request.path == '/admin-goods' else '' }}">
 						<a
 							href="/admin-goods"
 							class="text-decoration-none px-3 py-2 d-block"
