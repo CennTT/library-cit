@@ -16,45 +16,79 @@
 	</div>
 </div>
 
-<div class="personal-review">
-	{% if user_review %}
-	<h4>Your Review:</h4>
-	<div id="review-display">
-		<p>Rating: {{ user_review.rating }}</p>
-		<p>Review: {{ user_review.review }}</p>
+<div class="personal-review px-3 pt-4">
+	<div class="card rounded">
+		{% if user_review %}
+		<div class="card-header mb-3">Your Review</div>
+		<div class="card-body" id="review-display">
+			<div class="d-flex justify-content-between">
+				<h2 class="card-title">Rating</h2>
+				<div class="text-end">
+					<button
+						class="btn btn-outline-danger btn-sm"
+						id="review-edit-button"
+					>
+						Edit
+					</button>
+				</div>
+			</div>
+			<h2 class="--bs-danger-text-emphasis">
+				{{ user_review.rating }}/5
+			</h2>
+			<br />
+			<p class="card-text">{{ user_review.review }}</p>
+		</div>
+		<form
+			method="POST"
+			action="/edit-review/{{ book.title }}/{{ book.book_id }}"
+			id="edit-review-form"
+			style="display: none"
+		>
+			<label for="rating">Rating:</label>
+			<input
+				type="number"
+				name="rating"
+				id="rating"
+				value="{{ user_review.rating }}"
+			/>
+
+			<label for="review">Review:</label>
+			<textarea name="review" id="review">
+{{ user_review.review }}</textarea
+			>
+
+			<button type="submit">Update Review</button>
+		</form>
+		<button id="review-cancel-button" style="display: none">Cancel</button>
 	</div>
-	<button id="review-edit-button">Edit</button>
+
+	{% else %}
+	<div class="card-header mb-3">Add Your Review</div>
 	<form
 		method="POST"
-		action="/edit-review/{{ book.title }}/{{ book.book_id }}"
-		id="edit-review-form"
-		style="display: none"
+		action="/add-review/{{ book.title }}/{{ book.book_id }}"
 	>
 		<label for="rating">Rating:</label>
-		<input
-			type="number"
-			name="rating"
-			id="rating"
-			value="{{ user_review.rating }}"
-		/>
+		<input type="number" name="rating" id="rating" />
 
 		<label for="review">Review:</label>
-		<textarea name="review" id="review">{{ user_review.review }}</textarea>
+		<textarea name="review"></textarea>
 
-		<button type="submit">Update Review</button>
+		<button type="submit">Add Review</button>
 	</form>
-	<button id="review-cancel-button" style="display: none">Cancel</button>
 	{% endif %}
 </div>
 
-<div class="all-reviews">
-	<h4>All Reviews:</h4>
+<div class="all-reviews px-3 pt-4">
+	<h1 class="mb-3">Reviews</h1>
 	{% for review in ratings_reviews %} {% if review.User.nomor_induk !=
 	session.get('nim') %}
-	<div class="review">
-		<p><strong>{{ review.User.name }}</strong></p>
-		<p>Rating: {{ review.RatingReview.rating }}</p>
-		<p>Review: {{ review.RatingReview.review }}</p>
+	<div class="card rounded text-bg-dark mb-3" style="max-width: 18rem">
+		<div class="card-header">{{ review.User.name }}</div>
+		<div class="card-body">
+			<h5 class="card-title">{{ review.RatingReview.rating }}</h5>
+			<p class="card-text">{{ review.RatingReview.review }}</p>
+		</div>
 	</div>
 	{% endif %} {% endfor %}
 </div>
