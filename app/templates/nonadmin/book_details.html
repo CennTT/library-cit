@@ -16,38 +16,9 @@
 	</div>
 </div>
 
-<div class="personal-review px-3 pt-4">
-	<div class="card rounded">
-		<div class="card-header mb-3">
-		  Your Review
-		</div>
-		<div class="card-body">
-		<div class="d-flex justify-content-between">
-		  <h2 class="card-title">Rating</h2>
-			<div class="text-end">
-			<button class="btn btn-outline-danger btn-sm">Edit</button>
-			</div>
-		  </div>
-		  <h2 class="--bs-danger-text-emphasis">3.5/5</h2> <br>
-		  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-		</div>
-	  </div>
-</div>
-
-<div class="all-reviews px-3 pt-4">
-	<h1 class="mb-3">Reviews</h1>
-	<div class="card rounded text-bg-dark mb-3" style="max-width: 18rem;">
-		<div class="card-header">Vincent Waiman</div>
-		<div class="card-body">
-		  <h5 class="card-title">Rating: 3.5/5</h5>
-		  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-		</div>
-	  </div>
-</div>
-
-<!-- <div class="personal-review">
-	<h4>Your Review:</h4>
+<div class="personal-review">
 	{% if user_review %}
+	<h4>Your Review:</h4>
 	<div id="review-display">
 		<p>Rating: {{ user_review.rating }}</p>
 		<p>Review: {{ user_review.review }}</p>
