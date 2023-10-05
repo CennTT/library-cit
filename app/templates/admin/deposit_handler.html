@@ -1,0 +1,220 @@
+{% extends "admin/admin_layout.html" %} {% block body %}
+<div class="main-container d-flex">
+    <div class="sidebar bg-danger" id="side_nav">
+        <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+            <h2 class="fs-4"><span class="text-white">Library CIT</span></h2>
+            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fal fa-stream"></i></button>
+        </div>
+        <ul class="list-unstyled px-2">
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book pe-2"></i> Daftar Buku</a></li>
+            <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-hand-holding-dollar pe-2"></i> Deposit Saldo</a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-cart-shopping pe-2"></i> Peminjaman Barang</a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-people-roof pe-2"></i> Reservasi Ruangan</a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-file-circle-question pe-2"></i> Tata Cara</a></li>
+        </ul>
+
+        <ul class="list-unstyled px-2">
+            <li class=""><a href='/logout' class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand">Logo CIT</a>
+            </div>
+        </nav>
+    <div class="deposit-saldo-content px-3 pt-4">
+        <h2 class="text-center pt-5 pb-3">Student Deposits</h2>
+        <div class="container bg-white px-2 py-3 rounded">
+            <div class=" d-md-flex justify-content-md-end pb-2">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Deposit</button>
+            </div>                
+            <div class="table-responsive">
+
+                <table class="table table-rounded table-hover overflow-x-auto">
+                    <thead class="table-warning">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">NIM</th>
+                        <th scope="col">Deposit Balance</th>
+                        <th scope="col">Total Balances</th>
+                        <th scope="col">Proof</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>01/10/2023</td>
+                            <td>212100XXX</td>
+                            <td>10.000</td>
+                            <td>100.000</td>
+                            <td><a href="">Open File</a></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Dropdown button
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item">Pending</a></li>
+                                        <li><a class="dropdown-item">Done</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>02/10/2023</td>
+                            <td>212100XXX</td>
+                            <td>5.000</td>
+                            <td>100.000</td>
+                            <td><a href="">Open File</a></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Dropdown button
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item">Pending</a></li>
+                                        <li><a class="dropdown-item">Done</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>03/10/2023</td>
+                            <td>212100XXX</td>
+                            <td>5.000</td>
+                            <td>100.000</td>
+                            <td><a href="">Open File</a></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Dropdown button
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li><a class="dropdown-item">Pending</a></li>
+                                      <li><a class="dropdown-item">Done</a></li>
+                                    </ul>
+                                </div>
+                            </td>   
+                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>                        
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addModalLabel">Add New Book</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                      <label for="date" class="form-label">Date</label>
+                      <input type="date" class="form-control" id="date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nim" class="form-label">NIM</label>
+                        <select class="form-select" id="nim">
+                            <option value="nim1">NIM 1</option>
+                            <option value="nim2">NIM 2</option>
+                            <option value="nim3">NIM 3</option>
+                        </select>
+                    </div>                        
+                    <div class="mb-3">
+                        <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
+                        <input type="number" class="form-control" id="deposit-balances">
+                    </div>
+                    <div class="mb-3">
+                        <label for="proof" class="form-label">Proof</label>
+                        <input type="file" class="form-control" id="proof">
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status">
+                            <option value="status1">Pending</option>
+                            <option value="status2">Done</option>
+                        </select>
+                    </div>    
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="editModalLabel">Edit Deposit</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                      <label for="date" class="form-label">Date</label>
+                      <input type="date" class="form-control" id="date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" id="nim" disabled>
+                    </div>                        
+                    <div class="mb-3">
+                        <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
+                        <input type="number" class="form-control" id="deposit-balances">
+                    </div>
+                    <div class="mb-3">
+                        <label for="proof" class="form-label">Proof</label>
+                        <input type="file" class="form-control" id="proof">
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status">
+                            <option value="status1">Pending</option>
+                            <option value="status2">Done</option>
+                        </select>
+                    </div>    
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Deposit</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p fw-normal>Are you sure want to delete [NIM]'s deposit?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger">Yes, Delete this deposit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
