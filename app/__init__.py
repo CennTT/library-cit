@@ -26,5 +26,5 @@ db.init_app(app)
 def page_not_found(error):
     return "404 Page Not Found", 404
 
-app.register_blueprint(admin_bp, url_prefix='/admin')
+app.register_blueprint(admin_bp)
 app.register_blueprint(user_bp)
