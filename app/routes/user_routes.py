@@ -47,6 +47,8 @@ def homepage():
     
     books = Book.query.all() 
     
+    account_name = session.get('name')
+    
     average_ratings = {}
     
     for book in books:
@@ -56,7 +58,7 @@ def homepage():
 
         average_ratings[book.book_id] = average_rating
 
-    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings)
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name)
 
 @user_bp.route("/book/<path:title>/<int:id>")
 def book_details(title, id):
@@ -85,6 +87,7 @@ def book_details(title, id):
     # Retrieve the user_id from the session
     user_id = session.get('nim')
 
+    account_name = session.get('name')
     # Query the specific user's review for the book
     user_review = RatingReview.query.filter_by(book_id=id, user_id=user_id).first()
     ratings_reviews = (
@@ -93,7 +96,7 @@ def book_details(title, id):
     .join(User)
     .all()
     )
-    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review)
+    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review, account_name=account_name)
 
 @user_bp.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
 def edit_review(title, book_id):
@@ -152,10 +155,9 @@ def printer_balance():
         return render_template('nonadmin/login.html')
     
     id = session.get('nim')
-    
-    # printer_balance = PrinterBalance.query.get(id)
-    # return render_template('nonadmin/deposit.html', printer_balance=printer_balance)
-    return render_template('nonadmin/deposit.html')
+    account_name = session.get('name')
+
+    return render_template('nonadmin/deposit.html', account_name=account_name)
 
 @user_bp.route("/goods")
 def goods_details():
@@ -166,8 +168,11 @@ def goods_details():
         return render_template('nonadmin/login.html')
     
     goods = Goods.query.all()
-
-    return render_template('nonadmin/goods.html', goods=goods)
+    for item in goods:
+        if item.image:
+            item.image = base64.b64encode(item.image).decode('utf-8')
+    account_name = session.get('name')
+    return render_template('nonadmin/goods.html', goods=goods, account_name=account_name)
 
 @user_bp.route("/rooms")
 def rooms_details():
@@ -182,7 +187,8 @@ def rooms_details():
         if room.image:
             room.image = base64.b64encode(room.image).decode('utf-8')
 
-    return render_template('nonadmin/rooms.html', rooms=rooms)
+    account_name = session.get('name')
+    return render_template('nonadmin/rooms.html', rooms=rooms, account_name=account_name)
 
 
 @user_bp.route("/reserve_room/<int:room_id>", methods=["POST"])
@@ -221,5 +227,7 @@ def procedures():
     
     if not session['logged_in']:
         return render_template('nonadmin/login.html')
+    
+    account_name = session.get('name')
 
-    return render_template('nonadmin/procedures.html')
+    return render_template('nonadmin/procedures.html', account_name=account_name)

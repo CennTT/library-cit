@@ -88,6 +88,7 @@ class Goods(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     image = db.Column(LargeBinary, nullable=True) 
+    status = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
         return f'<Goods id={self.id}>'

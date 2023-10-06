@@ -1,29 +1,5 @@
 {% extends "admin/admin_layout.html" %} {% block body %}
 <div class="main-container d-flex">
-    <div class="sidebar bg-danger" id="side_nav">
-        <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
-            <h2 class="fs-4"><span class="text-white">Library CIT</span></h2>
-            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fal fa-stream"></i></button>
-        </div>
-        <ul class="list-unstyled px-2">
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book pe-2"></i> Daftar Buku</a></li>
-            <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-hand-holding-dollar pe-2"></i> Deposit Saldo</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-cart-shopping pe-2"></i> Peminjaman Barang</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-people-roof pe-2"></i> Reservasi Ruangan</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-file-circle-question pe-2"></i> Tata Cara</a></li>
-        </ul>
-
-        <ul class="list-unstyled px-2">
-            <li class=""><a href='/logout' class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-        </ul>
-    </div>
-
-    <div class="content">
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand">Logo CIT</a>
-            </div>
-        </nav>
     <div class="deposit-saldo-content px-3 pt-4">
         <h2 class="text-center pt-5 pb-3">List of Goods and Rooms</h2>
         <div class="container bg-white px-2 py-3 rounded">             

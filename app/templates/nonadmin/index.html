@@ -1,15 +1,15 @@
 {% extends "nonadmin/layout.html" %} {% block body %}
 
 <div class="books-display-content px-3 pt-4">
-	<div class="container py-5">
-		<h2 class="text-center pb-3">Daftar Buku</h2>
+	<div class="container py-3">
+		<h2 class="text-center pb-3b text-danger">List of Books</h2>
 		{% if books %} {% for book in books %}
 		<div class="row row-cols-1 row-cols-md-4 g-4 py-2">
 			<div class="col">
-				<div id="{{ book.book_id }}" class="card">
+				<div id="{{ book.book_id }}" class="card cb1">
 					<img
 						src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-						class="card-img-top w-50 mx-auto d-block pt-3"
+						class="card-img-top w-50 mx-auto d-block pt-4"
 					/>
 					<div class="card-body">
 						<h5 class="card-title">{{ book.title }}</h5>

@@ -5,9 +5,9 @@
 		{% if book %}
 		<img
 			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-			class="rounded"
+			class="rounded me-3"
 		/>
-		<div class="book-desc col-md-10 ps-4">
+		<div class="book-desc col-md-10 pt-4 ms-3">
 			<h3 class="text-success">{{ book.title }}</h3>
 			<p class="text-danger">Writer: {{ book.writer }}</p>
 			<p>Description: {{ book.description }}</p>
@@ -16,45 +16,87 @@
 	</div>
 </div>
 
-<div class="personal-review">
-	{% if user_review %}
-	<h4>Your Review:</h4>
-	<div id="review-display">
-		<p>Rating: {{ user_review.rating }}</p>
-		<p>Review: {{ user_review.review }}</p>
+<div class="personal-review px-3 pt-4">
+	<div class="card rounded">
+		{% if user_review %}
+		<div class="card-header mb-3 bg-success-subtle fw-medium">Your Review</div>
+		<div class="card-body" id="review-display">
+			<div class="d-flex justify-content-between">
+				<h4 class="card-title">Rating</h4>
+				<div class="text-end">
+					<button
+						class="btn btn-outline-warning rounded-pill"
+						id="review-edit-button"
+					>
+						Edit
+					</button>
+				</div>
+			</div>
+			<h3 class="text-success">
+				{{ user_review.rating }}/5
+			</h3>
+			<br />
+			<p class="card-text">{{ user_review.review }}</p>
+		</div>
+
+		<form
+			method="POST"
+			action="/edit-review/{{ book.title }}/{{ book.book_id }}"
+			id="edit-review-form"
+			style="display: none"
+		>
+			<div class="m-3">
+				<label for="rating" class="form-label">Rating</label>
+				<input type="number" class="form-control" id="rating" value="{{ user_review.rating }}">
+			</div>
+
+			<div class="m-3">
+				<label for="review">Review</label>
+				<textarea class="form-control" id="review">{{ user_review.review }}</textarea>
+			</div>
+
+			<div class="d-grid gap-2 d-flex justify-content-md-end m-3">
+				<button id="review-cancel-button" class="btn btn-secondary" type="button">Cancel</button>
+				<button class="btn btn-success" type="submit">Save</button>
+			</div>
+		</form>
+
 	</div>
-	<button id="review-edit-button">Edit</button>
+
+	{% else %}
+	<div class="card-header mb-3 bg-success-subtle fw-medium">Add Your Review</div>
 	<form
 		method="POST"
-		action="/edit-review/{{ book.title }}/{{ book.book_id }}"
-		id="edit-review-form"
-		style="display: none"
+		action="/add-review/{{ book.title }}/{{ book.book_id }}"
 	>
-		<label for="rating">Rating:</label>
-		<input
-			type="number"
-			name="rating"
-			id="rating"
-			value="{{ user_review.rating }}"
-		/>
+	<div class="m-3">
+		<label for="rating" class="form-label">Rating</label>
+		<input type="number" class="form-control" id="rating">
+	</div>
 
-		<label for="review">Review:</label>
-		<textarea name="review" id="review">{{ user_review.review }}</textarea>
+	<div class="m-3">
+		<label for="review">Review</label>
+		<textarea class="form-control" id="review"></textarea>
+	</div>
 
-		<button type="submit">Update Review</button>
+	<div class="d-grid gap-2 d-flex justify-content-md-end m-3">
+		<button id="review-cancel-button" class="btn btn-secondary" type="button">Cancel</button>
+		<button class="btn btn-success" type="submit">Add review</button>
+	</div>
 	</form>
-	<button id="review-cancel-button" style="display: none">Cancel</button>
 	{% endif %}
 </div>
 
-<div class="all-reviews">
-	<h4>All Reviews:</h4>
+<div class="all-reviews px-3 pt-4">
+	<h3 class="mb-3">Other Reviews</h3>
 	{% for review in ratings_reviews %} {% if review.User.nomor_induk !=
 	session.get('nim') %}
-	<div class="review">
-		<p><strong>{{ review.User.name }}</strong></p>
-		<p>Rating: {{ review.RatingReview.rating }}</p>
-		<p>Review: {{ review.RatingReview.review }}</p>
+	<div class="card rounded text-bg-dark mb-3" style="max-width: 18rem">
+		<div class="card-header">{{ review.User.name }}</div>
+		<div class="card-body">
+			<h5 class="card-title">{{ review.RatingReview.rating }}</h5>
+			<p class="card-text">{{ review.RatingReview.review }}</p>
+		</div>
 	</div>
 	{% endif %} {% endfor %}
 </div> -->
