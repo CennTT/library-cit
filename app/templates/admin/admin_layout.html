@@ -21,7 +21,7 @@
 	</head>
 	<body>
 		<div class="main-container d-flex">
-			<div class="sidebar bg-danger" id="side_nav">
+			<div class="sidebar bg-danger" id="side_nav" style="position: fixed; height: 100%;">
 				<div
 					class="header-box px-2 pt-3 pb-4 d-flex justify-content-between"
 				>
@@ -42,7 +42,7 @@
 							><i class="fa-solid fa-book pe-2"></i> Books</a
 						>
 					</li>
-					<li class="{{ 'active' if request.path == '/amdin-deposit' else '' }}">
+					<li class="{{ 'active' if request.path == '/admin-deposit' else '' }}">
 						<a
 							href="/admin-deposit"
 							class="text-decoration-none px-3 py-2 d-block"
@@ -74,10 +74,10 @@
 				</ul>
 			</div>
 
-			<div class="content">
+			<div class="content" style="margin-left: 250px;">
 				<nav class="navbar navbar-expand-md navbar-light bg-light">
 					<div class="container-fluid">
-						<a class="navbar-brand">Perpustakaan CIT</a>
+						<a class="navbar-brand">Logo CIT</a>
 					</div>
 				</nav>
 				{% block body %} {% endblock %}
