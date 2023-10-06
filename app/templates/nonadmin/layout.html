@@ -21,18 +21,12 @@
 	</head>
 	<body>
 		<div class="main-container d-flex">
-			<div class="sidebar" id="side_nav" style="background: #dd1818;">
-				<div
-					class="header-box px-2 pt-3 pb-4 d-flex justify-content-between"
-				>
-					<h2 class="fs-4">
-						<span class="text-white">Library CIT</span>
-					</h2>
-					<button
-						class="btn d-md-none d-block close-btn px-1 py-0 text-white"
-					>
-						<i class="fal fa-stream"></i>
-					</button>
+			<div class="sidebar" id="side_nav" style="background: #dd1818; position: fixed; height: 100%;">
+				<div class="header-box px-2 pt-4 pb-4 d-flex justify-content-between">
+					<h3 class="fs-4"><span class="bg-white text-dark rounded shadow px-2 me-2">CIT</span> <span
+							class="text-white">Nama Akun</span></h3>
+					<button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i
+							class="fal fa-stream"></i></button>
 				</div>
 				<ul class="list-unstyled px-2">
 					<li class="{{ 'active' if request.path == '/book' else '' }}">
@@ -92,12 +86,12 @@
 				</ul>
 			</div>
 
-			<div class="content">
-				<nav class="navbar navbar-expand-md navbar-light" style="background: white; box-shadow: offset-x offset-y blur-radius spread-radius color;">
+			<div class="content" style="margin-left: 250px;">
+				<div class="navbar navbar-expand-md navbar-light" style="background: white; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); position: relative; height: 3rem;">
 					<div class="container-fluid">
-						<a class="navbar-brand">Logo CIT</a>
+						<img src="{{ url_for('static', filename='images/logo-cit.png') }}" alt="Logo CIT" style="width: 100px; position: absolute; top: 10px; right: 10px;">
 					</div>
-				</nav>
+				</div>				
 				{% block body %} {% endblock %}
 			</div>
 		</div>

@@ -2,7 +2,7 @@
 
 body {
 	font-family: "Poppins", sans-serif;
-	background: #ececec;
+	background: #fbfbfb;
 }
 
 /*------------ Login ------------*/
@@ -59,7 +59,7 @@ hr.h-color {
     padding: 20px;
     }
     .card{
-        border-radius: 30px;
+        border-radius: 5%;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     }
     .card-body{
@@ -74,7 +74,28 @@ hr.h-color {
         background-color: black;
         border: none;
     }
+
+/*------------ Table ------------*/
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th, td {
+	padding: 12px 15px;
+	text-align: left;
+	border-bottom: 1px solid #f08b8b;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
 @media only screen and (max-width: 768px) {
+	.book-info{
+		display: block;
+	}
 	#side_nav {
 		margin-left: -250px;
 		position: absolute;
@@ -95,4 +116,41 @@ hr.h-color {
 	.right-box {
 		padding: 20px;
 	}
+
+
+	table, thead, tbody, th, td, tr {
+		display: block;
+	}
+
+	thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	tr {
+		border: 1px solid #ccc;
+		margin-bottom: 10px;
+	}
+
+	td {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align: left;
+	}
+
+	td:before {
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		content: attr(data-label);
+		font-weight: bold;
+	}
+
 }
