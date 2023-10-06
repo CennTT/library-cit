@@ -1,156 +1,314 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
-
-body {
-	font-family: "Poppins", sans-serif;
-	background: #fbfbfb;
-}
-
-/*------------ Login ------------*/
-
-.box-area {
-	width: 930px;
-}
-
-.right-box {
-	padding: 40px 30px 40px 40px;
-}
-
-::placeholder {
-	font-size: 16px;
-}
-
-.rounded-4 {
-	border-radius: 20px;
-}
-.rounded-5 {
-	border-radius: 30px;
-}
-
-/*------------ Side Nav ------------*/
-#side_nav {
-	min-width: 250px;
-	max-width: 250px;
-}
-
-.content {
-	min-height: 100vh;
-	width: 100%;
-}
-hr.h-color {
-	background: #eee;
-}
-
-.sidebar li.active {
-	border-left: 4px solid #fcaf17;	
-	background-color: rgba(252, 175, 23, 0.5);
-}
-
-.sidebar li.active a,
-.sidebar li.active a:hover {
-	color: #ffffff;
-}
-.sidebar li a {
-	color: #fff;
-}
-
-/*------------ Card ------------*/
-.card-img-top{
-    border-radius: 30px;
-    padding: 20px;
-    }
-    .card{
-        border-radius: 5%;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    }
-    .card-body{
-        padding: 25px;
-        margin-top: -15px;
-    }
-    .btn-primary{
-        border-radius: 50px;
-        width: 120px;
-    }
-    .btn-primary:hover{
-        background-color: black;
-        border: none;
-    }
-
-/*------------ Table ------------*/
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-}
-
-th, td {
-	padding: 12px 15px;
-	text-align: left;
-	border-bottom: 1px solid #f08b8b;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-@media only screen and (max-width: 768px) {
-	.book-info{
-		display: block;
-	}
-	#side_nav {
-		margin-left: -250px;
-		position: absolute;
+	@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+	body {
+		font-family: "Poppins", sans-serif;
+		background: #fbfbfb;
 		min-height: 100vh;
-		z-index: 1;
-	}
-	#side_nav.active {
-		margin-left: 0;
+		overflow-x: hidden;
 	}
 
-	.box-area {
-		margin: 0 10px;
+	:root {
+		--red: #dd1818;
+		--white: #fff;
+		--gray: #f5f5f5;
+		--black1: #222;
+		--black2: #999;
 	}
-	.left-box {
-		height: 100px;
+
+	/*------------ Login ------------*/	
+	.box-area {
+		width: 930px;
+	}
+
+	.right-box {
+		padding: 40px 30px 40px 40px;
+	}
+
+	::placeholder {
+		font-size: 16px;
+	}
+
+	.rounded-4 {
+		border-radius: 20px;
+	}
+	.rounded-5 {
+		border-radius: 30px;
+	}
+
+	/* --------- Sidenav ---------- */
+	.sidenav {
+		position: fixed;
+		width: 300px;
+		height: 100%;
+		background: var(--red);
+		border-left: 10px solid var(--red);
+		transition: 0.5s;
 		overflow: hidden;
 	}
-	.right-box {
-		padding: 20px;
+	.sidenav.active {
+		width: 80px;
 	}
-
-
-	table, thead, tbody, th, td, tr {
-		display: block;
-	}
-
-	thead tr {
+	
+	.sidenav ul {
 		position: absolute;
-		top: -9999px;
-		left: -9999px;
+		top: 0;
+		left: 0;
+		width: 100%;
 	}
-
-	tr {
-		border: 1px solid #ccc;
-		margin-bottom: 10px;
-	}
-
-	td {
-		border: none;
-		border-bottom: 1px solid #ddd;
+	
+	.sidenav ul li {
 		position: relative;
-		padding-left: 50%;
-		white-space: normal;
-		text-align: left;
+		width: 100%;
+		list-style: none;
+		border-top-left-radius: 30px;
+		border-bottom-left-radius: 30px;
 	}
-
-	td:before {
-		position: absolute;
-		top: 6px;
-		left: 6px;
-		width: 45%;
-		padding-right: 10px;
+	
+	.sidenav ul li:hover,
+	.sidenav ul li.hovered {
+		background-color: var(--white);
+	}
+	
+	.sidenav ul li:nth-child(1) {
+		margin-bottom: 40px;
+		pointer-events: none;
+	}
+	
+	.sidenav ul li a {
+		position: relative;
+		display: block;
+		width: 100%;
+		display: flex;
+		text-decoration: none;
+		color: var(--white);
+	}
+	.sidenav ul li:hover a,
+	.sidenav ul li.hovered a {
+		color: var(--red);
+	}
+	
+	.sidenav ul li a .icon {
+		position: relative;
+		display: block;
+		min-width: 60px;
+		height: 60px;
+		line-height: 75px;
+		text-align: center;
+	}
+	.sidenav ul li a .icon ion-icon {
+		font-size: 1.75rem;
+	}
+	
+	.sidenav ul li a .title {
+		position: relative;
+		display: block;
+		padding: 0 10px;
+		height: 60px;
+		line-height: 60px;
+		text-align: start;
 		white-space: nowrap;
-		content: attr(data-label);
-		font-weight: bold;
+	}
+	
+	/* --------- curve outside ---------- */
+	.sidenav ul li:hover a::before,
+	.sidenav ul li.hovered a::before {
+		content: "";
+		position: absolute;
+		right: 0;
+		top: -50px;
+		width: 50px;
+		height: 50px;
+		background-color: transparent;
+		border-radius: 50%;
+		box-shadow: 35px 35px 0 10px var(--white);
+		pointer-events: none;
+	}
+	.sidenav ul li:hover a::after,
+	.sidenav ul li.hovered a::after {
+		content: "";
+		position: absolute;
+		right: 0;
+		bottom: -50px;
+		width: 50px;
+		height: 50px;
+		background-color: transparent;
+		border-radius: 50%;
+		box-shadow: 35px -35px 0 10px var(--white);
+		pointer-events: none;
 	}
 
-}
+	.outer{
+		position: absolute;
+		width: calc(100% - 300px);
+		left: 300px;
+		min-height: 100vh;
+		background: var(--white);
+		transition: 0.5s;
+	}
+
+	.outer.active {
+		width: calc(100% - 80px);
+		left: 80px;
+	}
+
+	.toggle {
+		position: relative;
+		width: 60px;
+		height: 60px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 2.5rem;
+		cursor: pointer;
+	}
+
+	/*------------ Card ------------*/
+		.card-img-top{
+		border-radius: 30px;
+		padding: 20px;
+		}
+		.card{
+			border-radius: 5%;
+			box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+		}
+		.card-body{
+			padding: 25px;
+			margin-top: -15px;
+		}
+		.btn-primary{
+			border-radius: 50px;
+			width: 120px;
+		}
+		.btn-primary:hover{
+			background-color: black;
+			border: none;
+		}
+
+	/*------------ Table ------------*/
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-bottom: 20px;
+	}
+
+	th, td {
+		padding: 12px 15px;
+		text-align: left;
+		border-bottom: 1px solid #f08b8b;
+	}
+
+	th {
+		background-color: #f2f2f2;
+	}
+
+	/* ====================== Responsive Design ========================== */
+	@media (max-width: 991px) {
+		.sidenav {
+		left: -300px;
+		}
+		.sidenav.active {
+		width: 300px;
+		left: 0;
+		}
+		.outer {
+		width: 100%;
+		left: 0;
+		}
+		.outer.active {
+		left: 300px;
+		}
+		.cardBox {
+		grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	
+	@media (max-width: 768px) {
+		.book-info{
+			display: block;
+		}
+		#side_nav {
+			margin-left: -250px;
+			position: absolute;
+			min-height: 100vh;
+			z-index: 1;
+		}
+		#side_nav.active {
+			margin-left: 0;
+		}
+
+		.box-area {
+			margin: 0 10px;
+		}
+		.left-box {
+			height: 100px;
+			overflow: hidden;
+		}
+		.right-box {
+			padding: 20px;
+		}
+
+		table, thead, tbody, th, td, tr {
+			display: block;
+		}
+
+		thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+		}
+
+		tr {
+			border: 1px solid #ccc;
+			margin-bottom: 10px;
+		}
+
+		td {
+			border: none;
+			border-bottom: 1px solid #ddd;
+			position: relative;
+			padding-left: 50%;
+			white-space: normal;
+			text-align: left;
+		}
+
+		td:before {
+			position: absolute;
+			top: 6px;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+			content: attr(data-label);
+			font-weight: bold;
+		}
+		.details {
+		grid-template-columns: 1fr;
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.sidenav {
+		width: 100%;
+		left: -100%;
+		z-index: 1000;
+		}
+		.sidenav.active {
+		width: 100%;
+		left: 0;
+		}
+		.toggle {
+			padding-bottom: 2rem;
+			font-size: 2rem;
+		z-index: 10001;
+		}
+		.modal{
+			z-index: 10002;
+		}
+		.outer.active .toggle {
+		padding-top: 4rem;
+		color: #fff;
+		position: fixed;
+		right: 0;
+		left: initial;
+		}
+	}
+	
