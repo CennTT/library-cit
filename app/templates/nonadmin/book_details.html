@@ -1,16 +1,17 @@
 {% extends "nonadmin/layout.html" %} {% block body %}
 
 <div class="books-display-content px-3 pt-4">
-	<div class="book-info d-flex bg-light py-3 px-3">
+	<div class="book-info d-flex bg-light rounded py-3 px-3">
 		{% if book %}
 		<img
 			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-			class="rounded me-3"
+			class="img-fluid rounded m-3"
 		/>
 		<div class="book-desc col-md-10 pt-4 ms-3">
 			<h3 class="text-success">{{ book.title }}</h3>
 			<p class="text-danger">Writer: {{ book.writer }}</p>
-			<p>Description: {{ book.description }}</p>
+			<p class="w-75">Description: {{ book.description }}</p>
+			<button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#borrowModal" type="button">Borrow</button>
 		</div>
 		{% endif %}
 	</div>
@@ -100,6 +101,24 @@
 	</div>
 	{% endif %} {% endfor %}
 </div>
+
+<div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h1 class="modal-title fs-5" id="borrowModalLabel">Borrow Book</h1>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure want to borrow this book? The return date is ["returning date"]</p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-success">Borrow</button>
+		</div>
+	  </div>
+	</div>
+  </div>
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		var reviewEditButton = document.getElementById("review-edit-button");

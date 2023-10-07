@@ -42,6 +42,10 @@ def admin_book():
 
     return render_template('admin/book_handler.html')
 
+@admin_bp.route('/admin-borrowing-handler')
+def admin_borrow():
+    return render_template('admin/borrowing_handler.html')
+
 @admin_bp.route('/admin-deposit')
 def admin_deposit():
     return render_template('admin/deposit_handler.html')
