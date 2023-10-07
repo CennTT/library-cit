@@ -1,92 +1,90 @@
 {% extends "admin/admin_layout.html" %} {% block body %}
-<div class="main-container d-flex"> 
-    <div class="deposit-saldo-content px-3 pt-4">
-        <h2 class="text-center pt-5 pb-3">Student Deposits</h2>
-        <div class="container bg-white px-2 py-3 rounded">
-            <div class=" d-md-flex justify-content-md-end pb-2">
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Deposit</button>
-            </div>                
-            <div class="table-responsive">
+<div class="inner m-5"> 
+  <h2 class="text-center pt-1 pb-3 text-danger">Student Deposits</h2>
+  <div class="container bg-white px-2 py-3 rounded">
+      <div class=" d-md-flex justify-content-md-end pb-2">
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Deposit</button>
+      </div>                
+      <div class="table-responsive">
 
-                <table class="table table-rounded table-hover overflow-x-auto">
-                    <thead class="table-warning">
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">NIM</th>
-                        <th scope="col">Deposit Balance</th>
-                        <th scope="col">Total Balances</th>
-                        <th scope="col">Proof</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Options</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>01/10/2023</td>
-                            <td>212100XXX</td>
-                            <td>10.000</td>
-                            <td>100.000</td>
-                            <td><a href="">Open File</a></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Dropdown button
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item">Pending</a></li>
-                                        <li><a class="dropdown-item">Done</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>02/10/2023</td>
-                            <td>212100XXX</td>
-                            <td>5.000</td>
-                            <td>100.000</td>
-                            <td><a href="">Open File</a></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Dropdown button
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item">Pending</a></li>
-                                        <li><a class="dropdown-item">Done</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>03/10/2023</td>
-                            <td>212100XXX</td>
-                            <td>5.000</td>
-                            <td>100.000</td>
-                            <td><a href="">Open File</a></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Dropdown button
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                      <li><a class="dropdown-item">Pending</a></li>
-                                      <li><a class="dropdown-item">Done</a></li>
-                                    </ul>
-                                </div>
-                            </td>   
-                            <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>                        
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+          <table class="table table-rounded table-hover overflow-x-auto">
+              <thead class="table-warning">
+              <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">NIM</th>
+                  <th scope="col">Deposit Balance</th>
+                  <th scope="col">Total Balances</th>
+                  <th scope="col">Proof</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Options</th>
+              </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <th scope="row">1</th>
+                      <td>01/10/2023</td>
+                      <td>212100XXX</td>
+                      <td>10.000</td>
+                      <td>100.000</td>
+                      <td><a href="">Open File</a></td>
+                      <td>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown button
+                              </button>
+                              <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item">Pending</a></li>
+                                  <li><a class="dropdown-item">Done</a></li>
+                              </ul>
+                          </div>
+                      </td>
+                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                  </tr>
+                  <tr>
+                      <th scope="row">2</th>
+                      <td>02/10/2023</td>
+                      <td>212100XXX</td>
+                      <td>5.000</td>
+                      <td>100.000</td>
+                      <td><a href="">Open File</a></td>
+                      <td>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown button
+                              </button>
+                              <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item">Pending</a></li>
+                                  <li><a class="dropdown-item">Done</a></li>
+                              </ul>
+                          </div>
+                      </td>
+                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                  </tr>
+                  <tr>
+                      <th scope="row">3</th>
+                      <td>03/10/2023</td>
+                      <td>212100XXX</td>
+                      <td>5.000</td>
+                      <td>100.000</td>
+                      <td><a href="">Open File</a></td>
+                      <td>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown button
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a class="dropdown-item">Pending</a></li>
+                                <li><a class="dropdown-item">Done</a></li>
+                              </ul>
+                          </div>
+                      </td>   
+                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>                        
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">

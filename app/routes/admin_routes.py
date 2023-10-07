@@ -51,3 +51,6 @@ def admin_deposit():
 def admin_goods():
     return render_template('admin/goods_rooms_handler.html')
 
+@admin_bp.route('/admin-users')
+def admin_users():
+    return render_template('admin/user_handler.html')
