@@ -22,6 +22,13 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 db.init_app(app)
 
+@app.template_filter('limit_text')
+def limit_text(text, max_length):
+    if len(text) <= max_length:
+        return text
+    else:
+        return text[:max_length] + '...'
+
 @app.errorhandler(404)
 def page_not_found(error):
     return "404 Page Not Found", 404
