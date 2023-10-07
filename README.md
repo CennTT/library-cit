@@ -1,9 +1,8 @@
-# library-cit
+# Library CIT
 
-### This is modern web mid term project
-test
+**Modern Web Midterm Project**
 
-
-hi bet dari vincent
-
-halo semuanya dari bet
+**Group Members:**
+- Elisabeth Violina
+- Grace Theofie
+- Vincent Waiman
