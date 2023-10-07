@@ -10,7 +10,6 @@ class User(db.Model):
     name = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(64), nullable=False)
-    status = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
         return f'<User nomor_induk={self.nomor_induk}>'
@@ -33,6 +32,7 @@ class Book(db.Model):
     title = db.Column(db.String(255), nullable=False)
     writer = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    status = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
         return f'<Book book_id={self.book_id}>'
@@ -47,9 +47,11 @@ class BookBorrowing(db.Model):
     due_date = db.Column(db.Date, nullable=False)
     return_date = db.Column(db.Date, nullable=True)
     fine = db.Column(db.Float, nullable=True)
+    nomor_induk = db.Column(db.String(9), db.ForeignKey('users.nomor_induk'), nullable=False)
 
     book = db.relationship('Book', backref='book_borrowings')
-
+    user = db.relationship('User', backref='book_borrowings')
+    
     def __repr__(self):
         return f'<BookBorrowing id={self.id}>'
     
@@ -102,8 +104,8 @@ class BorrowingGoods(db.Model):
     good_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
     borrowing_date = db.Column(db.Date, nullable=False)
     return_date = db.Column(db.Date, nullable=True)
-    nomor_induk = db.Column(db.String(64), db.ForeignKey('users.nomor_induk'), nullable=False)
     status = db.Column(db.String(255), nullable=False)
+    nomor_induk = db.Column(db.String(9), db.ForeignKey('users.nomor_induk'), nullable=False)
 
     good = db.relationship('Goods', backref='borrowing_goods')
     user = db.relationship('User', backref='borrowing_goods')
