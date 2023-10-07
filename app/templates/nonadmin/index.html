@@ -6,17 +6,18 @@
 		<ion-icon name="notifications-outline" class="p-2 ms-2 me-2 bg-warning bg-opacity-50 rounded" style="font-size: 1.5rem;"></ion-icon>
 		<a href="" class="pt-2 fs-6 text-decoration-none text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#extendModal">Reminder: There are 2 books that need to be renewed before October 12, 2023 (click here)</a href="">
 	</div>
-	{% if books %} {% for book in books %}
-	<div class="row row-cols-1 row-cols-md-4 g-4 py-2">
-		<div class="col">
+	{% if books %}
+	<div class="row">
+		{% for book in books %}
+		<div class="col-12 col-md-3 mt-1 mb-1">
 			<div id="{{ book.book_id }}" class="card cb1">
 				<img
 					src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
 					class="card-img-top w-50 mx-auto d-block pt-4"
 				/>
 				<div class="card-body">
-					<h5 class="card-title">{{ book.title }}</h5>
-					<p class="card-text text-danger">{{ book.writer }}</p>
+					<h5 class="card-title">{{ book.title|limit_text(25) }}</h5>
+					<p class="card-text text-danger">{{ book.writer|limit_text(20) }}</p>
 				</div>
 				<div class="mb-5 d-flex justify-content-around">
 					<h4 class="text-success">{{ average_ratings[book.book_id] }}/5</h4>
@@ -32,8 +33,9 @@
 				</div>
 			</div>
 		</div>
-		{% endfor %} {% endif %}
+		{% endfor %}
 	</div>
+	{% endif %}
 
 	<div class="modal fade" id="extendModal" tabindex="-1" aria-labelledby="extendModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
