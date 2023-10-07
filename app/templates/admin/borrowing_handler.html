@@ -1,0 +1,178 @@
+{% extends "admin/admin_layout.html" %} {% block body %}
+    <div class="inner m-5">
+        <h2 class="text-center pt-1 pb-3 text-danger">Borrowing Handler</h2>
+        <div class="container bg-white px-2 py-3 rounded">
+            <div class=" d-md-flex justify-content-md-end pb-2">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Borrowing Data</button>
+            </div>                
+            <div class="table-responsive">
+
+                <table class="table table-rounded table-hover overflow-x-auto">
+                    <thead class="table-warning">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">NIM</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Book Title</th>
+                        <th scope="col">Borrowing Date</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Returning Date</th>
+                        <th scope="col">Fine (Per Day)</th>
+                        <th scope="col">Option</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <th scope="row">1</th>
+                          <td>212100XX1</td>
+                          <td>Dummy Dame 1</td>
+                          <td>Si Kancil Mencari Makan</td>
+                          <td>30/09/2023</td>
+                          <td>07/10/2023</td>
+                          <td>10/10/2023</td>
+                          <td>30.000</td>
+                          <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>212100XX1</td>
+                        <td>Dummy Dame 2</td>
+                        <td>Si Kancil Mencari Buah</td>
+                        <td>01/10/2023</td>
+                        <td>08/10/2023</td>
+                        <td>08/10/2023</td>
+                        <td>0</td>
+                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>212100XX1</td>
+                        <td>Dummy Dame 3</td>
+                        <td>Si Kancil Mencari Sayur</td>
+                        <td>01/10/2023</td>
+                        <td>08/10/2023</td>
+                        <td>08/10/2023</td>
+                        <td>0</td>
+                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addModalLabel">Add Borrowing Data</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form>
+                  <div class="mb-3">
+                      <label for="nim" class="form-label">NIM</label>
+                      <select class="form-select" id="nim">
+                          <option value="nim1">NIM 1</option>
+                          <option value="nim2">NIM 2</option>
+                          <option value="nim3">NIM 3</option>
+                      </select>
+                  </div>    
+                  <div class="mb-3">                    
+                    <label for="book" class="form-label">Book Title</label>
+                    <select class="form-select" id="book">
+                        <option value="book1">book 1</option>
+                        <option value="book2">book 2</option>
+                        <option value="book3">book 3</option>
+                    </select>
+                  </div>   
+                  <div class="mb-3">
+                      <label for="borrowing-date" class="form-label">Borrowing Date</label>
+                      <input type="date" class="form-control" id="borrowing-date">
+                  </div>
+                  <div class="mb-3">
+                      <label for="status" class="form-label">Status</label>
+                      <select class="form-select" id="status">
+                          <option value="status1">Pending</option>
+                          <option value="status2">Done</option>
+                      </select>
+                  </div>    
+                </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editModalLabel">Edit Borrowing Data</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                  <label for="nim" class="form-label">NIM</label>
+                  <select class="form-select" id="nim" disabled>
+                      <option value="nim1">NIM 1</option>
+                      <option value="nim2">NIM 2</option>
+                      <option value="nim3">NIM 3</option>
+                  </select>
+              </div>    
+              <div class="mb-3">                    
+                <label for="book" class="form-label">Book Title</label>
+                <select class="form-select" id="book">
+                    <option value="book1">book 1</option>
+                    <option value="book2">book 2</option>
+                    <option value="book3">book 3</option>
+                </select>
+              </div>   
+              <div class="mb-3">
+                  <label for="borrowing-date" class="form-label">Borrowing Date</label>
+                  <input type="date" class="form-control" id="borrowing-date">
+              </div>
+              <div class="mb-3">
+                <label for="due-date" class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="due-date">
+              </div>
+              <div class="mb-3">
+                <label for="returning-date" class="form-label">Returning Date</label>
+                <input type="date" class="form-control" id="returning-date">
+              </div>
+              <div class="mb-3">
+                <label for="fine" class="form-label">Fine (Rp)</label>
+                <input type="number" class="form-control" id="fine">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Borrowing Data</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p fw-normal>Are you sure want to delete [NIM]'s borrowing data?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Yes, Delete this data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
