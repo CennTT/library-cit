@@ -1,12 +1,11 @@
 {% extends "nonadmin/layout.html" %} {% block body %}
 
 <div class="books-display-content px-3 pt-4">
-	<div class="book-info d-flex bg-light rounded py-3 px-3">
+	<div class="book-info bg-light rounded py-3 px-3">
 		{% if book %}
 		<img
 			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-			class="img-fluid rounded m-3"
-		/>
+			class="rounded m-3" style="max-width: 400px;"/>
 		<div class="book-desc col-md-10 pt-4 ms-3">
 			<h3 class="text-success">{{ book.title }}</h3>
 			<p class="text-danger">Writer: {{ book.writer }}</p>

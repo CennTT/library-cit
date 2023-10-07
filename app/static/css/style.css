@@ -200,6 +200,9 @@
 		background-color: #f2f2f2;
 	}
 
+	.book-info{
+		display: flex;
+	}
 	/* ====================== Responsive Design ========================== */
 	@media (max-width: 991px) {
 		.sidenav {
@@ -222,7 +225,9 @@
 	}
 	
 	@media (max-width: 768px) {
+
 		.book-info{
+			margin: 0 auto;
 			display: block;
 		}
 		#side_nav {
