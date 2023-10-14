@@ -33,6 +33,7 @@ class Book(db.Model):
     writer = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(255), nullable=False)
+    book_cover = db.Column(LargeBinary, nullable=True) 
 
     def __repr__(self):
         return f'<Book book_id={self.book_id}>'

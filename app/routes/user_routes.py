@@ -1,8 +1,8 @@
 import base64
 import datetime
 from sqlalchemy import func
-from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
-from models import db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
+from flask import Flask, flash, request, render_template, redirect, url_for, session, Blueprint
+from models import PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
 
 
 user_bp = Blueprint('user', __name__)
@@ -110,10 +110,11 @@ def edit_review(title, book_id):
         user_id=session.get('nim'),
         book_id=book_id
     ).first()
-
+    if request.method == 'GET':
+        return redirect(url_for('user.book_details', title=title, id=book_id))
     if request.method == "POST":
-        new_rating = request.form.get("rating")
-        new_review = request.form.get("review")
+        new_rating = request.form["rating"]
+        new_review = request.form["review"]
 
         if user_review:
             user_review.rating = new_rating
@@ -130,19 +131,23 @@ def add_review(title, book_id):
     if not session['logged_in']:
         return render_template('nonadmin/login.html')
     
-    rating = request.form.get('rating')
-    review = request.form.get('review')
-    nim = session.get('nim')
-    review = RatingReview(
-        id = book_id,
-        user_id = nim,
-        book_id = book_id,
-        rating = rating,
-        review = review,
-    )
-    
-    db.session.add(review)
-    db.session.commit()
+    if request.method == 'GET':
+        return redirect(url_for('user.book_details', title=title, id=book_id))
+    if request.method == 'POST':
+        print("sini")
+        rating = request.form["rating"]
+        review = request.form["review"]
+        nim = session.get('nim')
+        review = RatingReview(
+            id = book_id,
+            user_id = nim,
+            book_id = book_id,
+            rating = rating,
+            review = review,
+        )
+        
+        db.session.add(review)
+        db.session.commit()
 
     return redirect(url_for('user.book_details', title=title, id=book_id))
 
@@ -156,8 +161,51 @@ def printer_balance():
     
     id = session.get('nim')
     account_name = session.get('name')
+    
+    user_balance = PrinterBalance.query.filter_by(nomor_induk=id).first()
 
-    return render_template('nonadmin/deposit.html', account_name=account_name)
+    deposit_history = PrinterBalanceDeposit.query.filter_by(nomor_induk=id).all()
+
+    return render_template('nonadmin/deposit.html', account_name=account_name, user_balance=user_balance, deposit_history=deposit_history)
+
+@user_bp.route("/top-up", methods=["GET", "POST"])
+def top_up():
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+
+    id = session.get('nim')
+    print("post")
+
+    if request.method == 'POST':
+        amount = request.form.get('amount')
+        
+        uploaded_file = request.files['input-file']
+        file_data = uploaded_file.read() 
+
+        new_deposit = PrinterBalanceDeposit(
+            nomor_induk=id,
+            deposited_balance=amount,
+            proof=file_data,
+            status='Pending'
+        )
+
+        db.session.add(new_deposit)
+        db.session.commit()
+
+        user_balance = PrinterBalance.query.filter_by(nomor_induk=id).first()
+        if user_balance:
+            user_balance.balance += int(amount)
+            db.session.commit()
+
+        flash('Top-up submitted successfully', 'success')
+        return render_template('nonadmin/deposit.html')
+    
+    else:
+        return render_template('nonadmin/deposit.html')
+    
 
 @user_bp.route("/goods")
 def goods_details():
