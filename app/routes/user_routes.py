@@ -282,3 +282,7 @@ def procedures():
     account_name = session.get('name')
 
     return render_template('nonadmin/procedures.html', account_name=account_name)
+
+@user_bp.route("/borrow-book")
+def borrow_book():
+    return render_template('borrowing_book.html')
