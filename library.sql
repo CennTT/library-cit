@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 10:41 AM
+-- Generation Time: Oct 18, 2023 at 10:42 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -224,9 +224,7 @@ CREATE TABLE `rating_reviews` (
 
 INSERT INTO `rating_reviews` (`id`, `user_id`, `book_id`, `rating`, `review`) VALUES
 (1, '212100113', 1, 1, 'aaaa'),
-(2, '212100113', 2, 5, 'tes'),
-(3, '212100693', 1, 3, 'tes'),
-(4, '212100693', 2, 4, 'aaaaaa');
+(2, '212100113', 2, 5, 'tes');
 
 -- --------------------------------------------------------
 
