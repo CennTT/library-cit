@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2023 at 04:05 PM
+-- Generation Time: Oct 18, 2023 at 10:41 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -42,6 +42,16 @@ INSERT INTO `admin_users` (`nomor_induk`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `alembic_version`
+--
+
+CREATE TABLE `alembic_version` (
+  `version_num` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `books`
 --
 
@@ -51,16 +61,17 @@ CREATE TABLE `books` (
   `writer` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `status` varchar(255) NOT NULL,
-  `book_cover` blob DEFAULT NULL
+  `book_cover` blob DEFAULT NULL,
+  `genre_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_id`, `title`, `writer`, `description`, `status`, `book_cover`) VALUES
-(1, 'Dunia Sophie', 'Jostein Gaarder', '\"Sophie\'s World\" adalah sebuah novel yang mengundang pemikiran dan membawa pembaca dalam perjalanan yang memikat melalui sejarah filsafat. Ceritanya mengikuti kehidupan Sophie Amundsen, seorang gadis muda yang secara tak terduga bertemu dengan seorang filsuf misterius bernama Alberto Knox. Saat surat-menyurat Sophie dengan Alberto berlangsung, dia diperkenalkan pada gagasan dan pemikir-pemikir filsafat yang paling penting dalam sejarah, mulai dari Yunani kuno hingga era modern.\r\n\r\nNovel yang menghibur ini menjelajahi konsep-konsep filsafat yang kompleks dengan cara yang dapat dijangkau dan dinikmati oleh pembaca dari segala usia. \"Sophie\'s World\" mendorong pembaca untuk merenungkan pertanyaan-pertanyaan tentang sifat realitas, eksistensi, etika, dan makna kehidupan. Ini adalah petualangan filsafat yang akan membuat Anda merenungkan misteri-misteri mendalam dunia dan kekuatan pemikiran manusia.', 'Available', NULL),
-(2, 'Iman, Rasio dan Kebenaran', 'Pdt. DR. Stephen Tong', 'Apakah mungkin seseorang yang beriman kuat dapat tetap memiliki pikiran yang bertanggung jawab dalam menghadapi berbagai kesulitan, dengan berpikir sesuai dengan firman Tuhan', 'Available', NULL);
+INSERT INTO `books` (`book_id`, `title`, `writer`, `description`, `status`, `book_cover`, `genre_id`) VALUES
+(1, 'Dunia Sophie', 'Jostein Gaarder', '\"Sophie\'s World\" adalah sebuah novel yang mengundang pemikiran dan membawa pembaca dalam perjalanan yang memikat melalui sejarah filsafat. Ceritanya mengikuti kehidupan Sophie Amundsen, seorang gadis muda yang secara tak terduga bertemu dengan seorang filsuf misterius bernama Alberto Knox. Saat surat-menyurat Sophie dengan Alberto berlangsung, dia diperkenalkan pada gagasan dan pemikir-pemikir filsafat yang paling penting dalam sejarah, mulai dari Yunani kuno hingga era modern.\r\n\r\nNovel yang menghibur ini menjelajahi konsep-konsep filsafat yang kompleks dengan cara yang dapat dijangkau dan dinikmati oleh pembaca dari segala usia. \"Sophie\'s World\" mendorong pembaca untuk merenungkan pertanyaan-pertanyaan tentang sifat realitas, eksistensi, etika, dan makna kehidupan. Ini adalah petualangan filsafat yang akan membuat Anda merenungkan misteri-misteri mendalam dunia dan kekuatan pemikiran manusia.', 'Available', NULL, 1),
+(2, 'Iman, Rasio dan Kebenaran', 'Pdt. DR. Stephen Tong', 'Apakah mungkin seseorang yang beriman kuat dapat tetap memiliki pikiran yang bertanggung jawab dalam menghadapi berbagai kesulitan, dengan berpikir sesuai dengan firman Tuhan', 'Available', NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -108,6 +119,28 @@ CREATE TABLE `borrowing_rooms` (
   `nomor_induk` varchar(64) NOT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `genres`
+--
+
+CREATE TABLE `genres` (
+  `genre_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `genres`
+--
+
+INSERT INTO `genres` (`genre_id`, `name`) VALUES
+(3, 'Biography'),
+(5, 'Essays'),
+(1, 'Novel'),
+(2, 'Religion & Spirituality'),
+(4, 'Science & Technology');
 
 -- --------------------------------------------------------
 
@@ -190,7 +223,10 @@ CREATE TABLE `rating_reviews` (
 --
 
 INSERT INTO `rating_reviews` (`id`, `user_id`, `book_id`, `rating`, `review`) VALUES
-(1, '212100113', 1, 1, 'aaaa');
+(1, '212100113', 1, 1, 'aaaa'),
+(2, '212100113', 2, 5, 'tes'),
+(3, '212100693', 1, 3, 'tes'),
+(4, '212100693', 2, 4, 'aaaaaa');
 
 -- --------------------------------------------------------
 
@@ -250,10 +286,17 @@ ALTER TABLE `admin_users`
   ADD PRIMARY KEY (`nomor_induk`);
 
 --
+-- Indexes for table `alembic_version`
+--
+ALTER TABLE `alembic_version`
+  ADD PRIMARY KEY (`version_num`);
+
+--
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
-  ADD PRIMARY KEY (`book_id`);
+  ADD PRIMARY KEY (`book_id`),
+  ADD KEY `genre_id` (`genre_id`);
 
 --
 -- Indexes for table `book_borrowings`
@@ -278,6 +321,13 @@ ALTER TABLE `borrowing_rooms`
   ADD PRIMARY KEY (`id`),
   ADD KEY `room_id` (`room_id`),
   ADD KEY `nomor_induk` (`nomor_induk`);
+
+--
+-- Indexes for table `genres`
+--
+ALTER TABLE `genres`
+  ADD PRIMARY KEY (`genre_id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `goods`
@@ -347,6 +397,12 @@ ALTER TABLE `borrowing_rooms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `genres`
+--
+ALTER TABLE `genres`
+  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
@@ -362,7 +418,7 @@ ALTER TABLE `printer_balance_deposits`
 -- AUTO_INCREMENT for table `rating_reviews`
 --
 ALTER TABLE `rating_reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -373,6 +429,12 @@ ALTER TABLE `rooms`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `books`
+--
+ALTER TABLE `books`
+  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`);
 
 --
 -- Constraints for table `book_borrowings`
