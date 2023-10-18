@@ -3,8 +3,8 @@
   <h2 class="text-center pt-1 pb-3 text-danger">Balance Deposit</h2>
       <div class="main-content">
       <div class="deposit-saldo-content pt-4">
-          <h5 class="border-start border-danger border-5 p-2 bg-warning-subtle align-middle w-50 mb-4">Current Balance: {{ "{:,.0f}".format(user_balance.balance) }},-</h5>
-          <h5 class="pb-1">Payment History</h5>
+        <h5 class="border-start border-danger border-5 p-2 bg-warning-subtle align-middle w-50 mb-4">Current Balance: Rp {{ "{:,.0f}".format(user_balance.balance if user_balance.balance is defined else 0) }},-</h5>
+        <h5 class="pb-1">Payment History</h5>
           <div class="container bg-white px-2 py-3 rounded">
             <div class="row mb-3 bg-primary-subtle p-2">
               <div class="col-md-6">
@@ -33,7 +33,7 @@
                       <tr>
                           <th scope="row">{{ loop.index }}</th>
                           <td>{{ deposit.date.strftime('%d/%m/%Y') }}</td>
-                          <td>{{ "{:,.0f}".format(deposit.deposited_balance) }}</td>
+                          <td>{{ "{:,.0f}".format(deposit.deposited_balance if deposit.deposited_balance is defined else 0) }}</td>
                           <td>
                               <a href="data:image/jpeg;base64,{{ deposit.proof }}" target="_blank">Open File</a>
                           </td>
@@ -72,7 +72,7 @@
                       <input type="file" class="form-control" id="input-file" name="input-file"required>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button class="btn btn-success" type="submit">Top Up</button>
                     </div>
                   </form>
