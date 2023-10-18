@@ -168,6 +168,9 @@ def printer_balance():
     user_balance = PrinterBalance.query.filter_by(nomor_induk=id).first()
 
     deposit_history = PrinterBalanceDeposit.query.filter_by(nomor_induk=id).all()
+    if deposit_history:
+        for history in deposit_history:
+            history.proof = base64.b64encode(history.proof).decode('utf-8')
 
     return render_template('nonadmin/deposit.html', account_name=account_name, user_balance=user_balance, deposit_history=deposit_history)
 
@@ -224,6 +227,36 @@ def goods_details():
             item.image = base64.b64encode(item.image).decode('utf-8')
     account_name = session.get('name')
     return render_template('nonadmin/goods.html', goods=goods, account_name=account_name)
+
+
+@user_bp.route("/borrow-goods/<int:item_id>", methods=["POST"])
+def reserve_item(item_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    borrow_date = request.form.get("borrow")
+    return_date = request.form.get("return")
+    
+    good_id = item_id
+    nomor_induk = session.get("nim")
+
+    borrowing_goods = BorrowingGoods(
+        good_id=good_id,
+        borrowing_date=borrow_date,
+        return_date=return_date,
+        status="Pending",
+        nomor_induk=nomor_induk
+    )
+
+    db.session.add(borrowing_goods)
+    db.session.commit()
+    
+    return render_template('nonadmin/goods.html')
+    
+    
 
 @user_bp.route("/rooms")
 def rooms_details():
@@ -282,6 +315,25 @@ def procedures():
     account_name = session.get('name')
 
     return render_template('nonadmin/procedures.html', account_name=account_name)
+
+
+@user_bp.route("/show-image/<int:image_id>")
+def show_image(image_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+
+    deposit = PrinterBalanceDeposit.query.get(image_id)
+
+    if deposit:
+        image_data = base64.b64encode(deposit.proof).decode('utf-8')
+    else:
+        image_data = None
+
+    return render_template('nonadmin/show_image.html', image_data=image_data)
+
 
 @user_bp.route("/borrow-book")
 def borrow_book():

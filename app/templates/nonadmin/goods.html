@@ -23,6 +23,8 @@
 					>
 						Borrow
 					</button>
+					{% else %}
+					<h4 class="text-danger">Booked</h4>
 					{% endif %}
 				</div>
 			</div>
@@ -52,26 +54,31 @@
 						></button>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form
+							action="/borrow-goods/{{ item.id }}"
+							method="POST"
+						>
 							<div class="mb-3">
-								<label for="amount" class="form-label"
+								<label for="borrow" class="form-label"
 									>Borrow Date</label
 								>
 								<input
 									type="date"
 									class="form-control"
-									id="amount"
+									id="borrow"
+									name="borrow"
 									required
 								/>
 							</div>
 							<div class="mb-3">
-								<label for="input-file" class="form-label"
+								<label for="return" class="form-label"
 									>Return Date</label
 								>
 								<input
 									type="date"
 									class="form-control"
-									id="input-file"
+									id="return"
+									name="return"
 									required
 								/>
 							</div>
@@ -83,7 +90,7 @@
 								>
 									Close
 								</button>
-								<button type="button" class="btn btn-success">
+								<button type="submit" class="btn btn-success">
 									Borrow
 								</button>
 							</div>
