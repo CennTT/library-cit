@@ -34,10 +34,22 @@ class Book(db.Model):
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(255), nullable=False)
     book_cover = db.Column(LargeBinary, nullable=True) 
+    genre_id = db.Column(db.Integer, db.ForeignKey('genres.genre_id'), nullable=True)
 
     def __repr__(self):
         return f'<Book book_id={self.book_id}>'
     
+    
+class Genre(db.Model):
+    __tablename__ = 'genres'
+
+    genre_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Genre genre_id={self.genre_id} name={self.name}>'
+    
+
 
 class BookBorrowing(db.Model):
     __tablename__ = 'book_borrowings'
@@ -61,7 +73,7 @@ class PrinterBalance(db.Model):
     __tablename__ = 'printer_balances'
 
     nomor_induk = db.Column(db.String(64), db.ForeignKey('users.nomor_induk'), primary_key=True)
-    balance = db.Column(db.Integer, nullable=False)
+    balance = db.Column(db.Integer, nullable=False, default=0)
 
     user = db.relationship('User', backref='printer_balance')
 

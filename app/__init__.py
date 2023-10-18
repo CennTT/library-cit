@@ -13,6 +13,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, B
 from models import db
 from routes.admin_routes import admin_bp
 from routes.user_routes import user_bp
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 @app.template_filter('limit_text')
 def limit_text(text, max_length):

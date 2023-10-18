@@ -18,6 +18,7 @@
 				<div class="card-body">
 					<h5 class="card-title">{{ book.title|limit_text(25) }}</h5>
 					<p class="card-text text-danger">{{ book.writer|limit_text(20) }}</p>
+					<p>{{ book.genre_name }}</p>
 				</div>
 				<div class="mb-5 d-flex justify-content-around">
 					<h4 class="text-success">{{ average_ratings[book.book_id] }}/5</h4>

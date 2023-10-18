@@ -2,7 +2,7 @@ import base64
 import datetime
 from sqlalchemy import func
 from flask import Flask, flash, request, render_template, redirect, url_for, session, Blueprint
-from models import PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
+from models import PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms, Genre
 
 
 user_bp = Blueprint('user', __name__)
@@ -57,6 +57,10 @@ def homepage():
         average_rating = float(average_rating) if average_rating is not None else 0.0
 
         average_ratings[book.book_id] = average_rating
+        
+        genre = Genre.query.get(book.genre_id)  
+        genre_name = genre.name if genre else None
+        book.genre_name = genre_name 
 
     return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name)
 
