@@ -143,7 +143,6 @@ def add_review(title, book_id):
         review = request.form["review"]
         nim = session.get('nim')
         review = RatingReview(
-            id = book_id,
             user_id = nim,
             book_id = book_id,
             rating = rating,
