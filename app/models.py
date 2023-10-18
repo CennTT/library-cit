@@ -36,6 +36,8 @@ class Book(db.Model):
     book_cover = db.Column(LargeBinary, nullable=True) 
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.genre_id'), nullable=True)
 
+    genre = db.relationship('Genre', backref='books')
+
     def __repr__(self):
         return f'<Book book_id={self.book_id}>'
     

@@ -6,7 +6,6 @@
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Book</button>
             </div>                
             <div class="table-responsive">
-
                 <table class="table table-rounded table-hover overflow-x-auto">
                     <thead class="table-warning">
                     <tr>
@@ -15,34 +14,24 @@
                         <th scope="col">Cover</th>
                         <th scope="col">Author</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Genre</th>
                         <th scope="col">Option</th>
                     </tr>
                     </thead>
+                    {% if books %}
                     <tbody>
+                    {% for book in books %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Si Kancil Mencari Makan</td>
-                        <td>Book Cover</td>
-                        <td>Vincent</td>
-                        <td class="text-wrap overflow-hidden" style="width: 30rem; height: 6rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+                        <th scope="row">{{ book.book_id }}</th>
+                        <td>{{ book.title|limit_text(25) }}</td>
+                        <td>{{ book.book_cover }}</td>
+                        <td>{{ book.writer|limit_text(20) }}</td>
+                        <td class="text-wrap overflow-hidden" style="width: 30rem; height: 6rem;">{{ book.description|limit_text(50) }}</td>
+                        <td>{{ book.genre.name }}</td>
                         <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Kucing Gendut</td>
-                        <td>Book Cover</td>
-                        <td>Grace</td>
-                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Kelinci Kecilku</td>
-                        <td>Book Cover</td>
-                        <td>Elisabeth</td>
-                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                    </tr>
+                    {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -56,28 +45,32 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form
+                  method="POST"
+                  action="/add-book"
+                  enctype="multipart/form-data"
+                >
                     <div class="mb-3">
                       <label for="title" class="form-label">Title</label>
-                      <input type="text" class="form-control" id="title">
+                      <input name="title" type="text" class="form-control" id="title">
                     </div>
                     <div class="mb-3">
                         <label for="cover" class="form-label">Book Cover</label>
-                        <input type="file" class="form-control" id="cover">
+                        <input name="cover" type="file" class="form-control" id="cover">
                     </div>
                     <div class="mb-3">
                         <label for="author" class="form-label">Author</label>
-                        <input type="text" class="form-control" id="author">
+                        <input name="author" type="text" class="form-control" id="author">
                     </div>
                     <div class="mb-3">
                         <label for="description">Description</label>
-                        <textarea class="form-control" id="floatingTextarea"></textarea>
+                        <textarea name="description" class="form-control" id="floatingTextarea"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Add</button>
                     </div>
                   </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success">Add</button>
             </div>
           </div>
         </div>
@@ -136,4 +129,5 @@
         </div>
       </div>
 </div>
+
 {% endblock %}
