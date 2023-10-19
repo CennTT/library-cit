@@ -4,7 +4,7 @@
 	<div class="book-info bg-light rounded py-3 px-3">
 		{% if book %}
 		<img
-			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
+			src="{{ url_for('static', filename=book.book_cover) }}"
 			class="rounded m-3"
 			style="max-width: 400px"
 		/>

@@ -57,7 +57,6 @@ def homepage():
         average_rating = float(average_rating) if average_rating is not None else 0.0
 
         average_ratings[book.book_id] = average_rating
-        
         genre = Genre.query.get(book.genre_id)  
         genre_name = genre.name if genre else None
         book.genre_name = genre_name 
@@ -249,7 +248,6 @@ def add_review(title, book_id):
     if request.method == 'GET':
         return redirect(url_for('user.book_details', title=title, id=book_id))
     if request.method == 'POST':
-        print("sini")
         rating = request.form["rating"]
         review = request.form["review"]
         nim = session.get('nim')
@@ -297,7 +295,6 @@ def top_up():
         return render_template('nonadmin/login.html')
 
     id = session.get('nim')
-    print("post")
 
     if request.method == 'POST':
         amount = request.form.get('amount')
@@ -368,7 +365,5 @@ def borrow_book():
         .filter(BookBorrowing.nomor_induk == nomor_induk)
         .all()
     )
-    
-    print(borrowed_books)
     
     return render_template('nonadmin/borrowing_book.html', borrowed_books=borrowed_books)
