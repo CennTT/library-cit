@@ -97,8 +97,9 @@ def edit_book(title, book_id):
                 file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], secure_filename(filename))
                 uploaded_file.save(file_path)
                 new_book_cover = 'images/book_cover/' + filename
+                book.book_cover = new_book_cover
             book.title = new_title
-            book.book_cover = new_book_cover
+            book.book_cover = book.book_cover
             book.writer = new_writer
             book.description = new_description
             book.genre_id = new_genre_id
