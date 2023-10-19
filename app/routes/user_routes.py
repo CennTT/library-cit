@@ -359,6 +359,8 @@ def borrow_book():
     
     nomor_induk = session.get("nim")
     
+    account_name = session.get('name')
+    
     borrowed_books = (
         db.session.query(Book, BookBorrowing)
         .join(BookBorrowing, Book.book_id == BookBorrowing.book_id)
@@ -366,4 +368,4 @@ def borrow_book():
         .all()
     )
     
-    return render_template('nonadmin/borrowing_book.html', borrowed_books=borrowed_books)
+    return render_template('nonadmin/borrowing_book.html', borrowed_books=borrowed_books, account_name=account_name)
