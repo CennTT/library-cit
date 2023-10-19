@@ -5,12 +5,13 @@
 		{% if book %}
 		<img
 			src="{{ url_for('static', filename='images/createthumb.jpeg') }}"
-			class="rounded m-3" style="max-width: 400px;"/>
+			class="rounded m-3"
+			style="max-width: 400px"
+		/>
 		<div class="book-desc col-md-10 pt-4 ms-3">
 			<h3 class="text-success">{{ book.title }}</h3>
 			<p class="text-danger">Writer: {{ book.writer }}</p>
 			<p class="w-75">Description: {{ book.description }}</p>
-			<button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#borrowModal" type="button">Borrow</button>
 		</div>
 		{% endif %}
 	</div>
@@ -19,7 +20,9 @@
 <div class="personal-review px-3 pt-4">
 	<div class="card rounded">
 		{% if user_review %}
-		<div class="card-header mb-3 bg-success-subtle fw-medium">Your Review</div>
+		<div class="card-header mb-3 bg-success-subtle fw-medium">
+			Your Review
+		</div>
 		<div class="card-body" id="review-display">
 			<div class="d-flex justify-content-between">
 				<h4 class="card-title">Rating</h4>
@@ -32,9 +35,7 @@
 					</button>
 				</div>
 			</div>
-			<h3 class="text-success">
-				{{ user_review.rating }}/5
-			</h3>
+			<h3 class="text-success">{{ user_review.rating }}/5</h3>
 			<br />
 			<p class="card-text">{{ user_review.review }}</p>
 		</div>
@@ -47,42 +48,80 @@
 		>
 			<div class="m-3">
 				<label for="rating" class="form-label">Rating</label>
-				<input type="number" class="form-control" id="rating" name="rating" value="{{ user_review.rating }}" min="0" max="5" step="0.1">
+				<input
+					type="number"
+					class="form-control"
+					id="rating"
+					name="rating"
+					value="{{ user_review.rating }}"
+					min="0"
+					max="5"
+					step="0.1"
+				/>
 			</div>
 
 			<div class="m-3">
 				<label for="review">Review</label>
-				<textarea class="form-control" id="review" name="review">{{ user_review.review }}</textarea>
+				<textarea class="form-control" id="review" name="review">
+{{ user_review.review }}</textarea
+				>
 			</div>
 
 			<div class="d-grid gap-2 d-flex justify-content-md-end m-3">
-				<button id="review-cancel-button" class="btn btn-secondary" type="button">Cancel</button>
+				<button
+					id="review-cancel-button"
+					class="btn btn-secondary"
+					type="button"
+				>
+					Cancel
+				</button>
 				<button class="btn btn-success" type="submit">Save</button>
 			</div>
 		</form>
-
 	</div>
 
 	{% else %}
-	<div class="card-header mb-3 bg-success-subtle fw-medium">Add Your Review</div>
+	<div class="card-header mb-3 bg-success-subtle fw-medium">
+		Add Your Review
+	</div>
 	<form
 		method="POST"
 		action="/add-review/{{ book.title }}/{{ book.book_id }}"
 	>
-	<div class="m-3">
-		<label for="rating" class="form-label">Rating</label>
-		<input type="number" class="form-control" id="rating" name="rating" min="0" max="5" step="0.1" required>
-	</div>
+		<div class="m-3">
+			<label for="rating" class="form-label">Rating</label>
+			<input
+				type="number"
+				class="form-control"
+				id="rating"
+				name="rating"
+				min="0"
+				max="5"
+				step="0.1"
+				required
+			/>
+		</div>
 
-	<div class="m-3">
-		<label for="review">Review</label>
-		<textarea class="form-control" id="review" name="review" required></textarea>
-	</div>
+		<div class="m-3">
+			<label for="review">Review</label>
+			<textarea
+				class="form-control"
+				id="review"
+				name="review"
+				required
+			></textarea>
+		</div>
 
-	<div class="d-grid gap-2 d-flex justify-content-md-end m-3">
-		<button id="review-cancel-button" class="btn btn-secondary" type="button">Cancel</button>
-		<button class="btn btn-success" type="submit">Add review</button>
-	</div>
+		<div class="d-grid gap-2 d-flex justify-content-md-end m-3">
+			<button
+				id="review-cancel-button"
+				class="btn btn-secondary"
+				type="button"
+			>
+				Cancel
+			</button>
+			<button class="btn btn-success" type="submit">Add review</button>
+		</div>
 	</form>
 	{% endif %}
 </div>
@@ -101,23 +140,49 @@
 	{% endif %} {% endfor %}
 </div>
 
-<div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+<div
+	class="modal fade"
+	id="borrowModal"
+	tabindex="-1"
+	aria-labelledby="borrowModalLabel"
+	aria-hidden="true"
+>
 	<div class="modal-dialog">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h1 class="modal-title fs-5" id="borrowModalLabel">Borrow Book</h1>
-		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="borrowModalLabel">
+					Borrow Book
+				</h1>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					Are you sure want to borrow this book? The return date is
+					{{due_date}}
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-bs-dismiss="modal"
+				>
+					Close
+				</button>
+				<a href="/borrow/{{book.title}}/{{book.book_id}}">
+					<button type="button" class="btn btn-success">
+						Borrow
+					</button>
+				</a>
+			</div>
 		</div>
-		<div class="modal-body">
-			<p>Are you sure want to borrow this book? The return date is ["returning date"]</p>
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-		  <button type="button" class="btn btn-success">Borrow</button>
-		</div>
-	  </div>
 	</div>
-  </div>
+</div>
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		var reviewEditButton = document.getElementById("review-edit-button");

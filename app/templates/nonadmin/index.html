@@ -2,24 +2,27 @@
 
 <div class="inner m-5">
 	<h2 class="text-center pb-3 text-danger">List of Books</h2>
-	<div class="bg-warning-subtle border-start border-warning border-5 p-2 d-flex mb-2">
+	{# <div class="bg-warning-subtle border-start border-warning border-5 p-2 d-flex mb-2">
 		<ion-icon name="notifications-outline" class="p-2 ms-2 me-2 bg-warning bg-opacity-50 rounded" style="font-size: 1.5rem;"></ion-icon>
 		<a href="" class="pt-2 fs-6 text-decoration-none text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#extendModal">Reminder: There are 2 books that need to be renewed before October 12, 2023 (click here)</a href="">
-	</div>
+	</div> #}
 	<div class="container-fluid bg-light my-2">
 		<div class="d-flex justify-content-end p-2"> 
-			<form role="search" class="d-flex me-2">
-				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+			<form role="search" class="d-flex me-2"
+				action="/search-book"
+				method="POST"
+			>
+				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="book_name">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
 			<div class="dropdown">
 				<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				  Dropdown button
+				  Genre
 				</button>
 				<ul class="dropdown-menu">
-				  <li><a class="dropdown-item" href="#">Action</a></li>
-				  <li><a class="dropdown-item" href="#">Another action</a></li>
-				  <li><a class="dropdown-item" href="#">Something else here</a></li>
+					{% for item in genre %}
+					<li><a class="dropdown-item" href="/book/{{item.genre_id}}">{{item.name}}</a></li>
+					{% endfor %}
 				</ul>
 			  </div>
 		</div>
