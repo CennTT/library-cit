@@ -12,12 +12,11 @@
 				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
-			<select name="Genre" id="" class="btn btn-secondary dropdown-toggle p-2">
+			<select name="Genre" id="genreDropdown" class="btn btn-secondary dropdown-toggle p-2">
 				<option value="">Genre</option>
-				<option value="1">Genre 1</option>
-				<option value="2">Genre 2</option>
-				<option value="3">Genre 3</option>	
-				<option value="4">Genre 4</option>
+				{% for item in genre %}
+					<option value="{{ item.genre_id }}">{{ item.name }}</option>
+				{% endfor %}
 			</select>
 		</div>
 	</div>

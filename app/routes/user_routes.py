@@ -37,7 +37,6 @@ def logout():
 
 
 @user_bp.route("/")
-@user_bp.route("/book")
 def homepage():
     if 'logged_in' not in session:
         return render_template('nonadmin/login.html')
@@ -46,6 +45,7 @@ def homepage():
         return render_template('nonadmin/login.html')
     
     books = Book.query.all() 
+    genres = Genre.query.all()
     
     account_name = session.get('name')
     
@@ -62,7 +62,38 @@ def homepage():
         genre_name = genre.name if genre else None
         book.genre_name = genre_name 
 
-    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name)
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres)
+
+
+@user_bp.route("/book/<int:genre_id>")
+def genre_page(genre_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    books = Book.query.filter_by(genre_id=genre_id) 
+    genres = Genre.query.all()
+    
+    account_name = session.get('name')
+    
+    average_ratings = {}
+    
+    for book in books:
+        average_rating = db.session.query(db.func.avg(RatingReview.rating)).filter_by(book_id=book.book_id).scalar()
+
+        average_rating = float(average_rating) if average_rating is not None else 0.0
+
+        average_ratings[book.book_id] = average_rating
+        
+        genre = Genre.query.get(book.genre_id)  
+        genre_name = genre.name if genre else None
+        book.genre_name = genre_name 
+        
+        
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres)
+
 
 @user_bp.route("/book/<path:title>/<int:id>")
 def book_details(title, id):
