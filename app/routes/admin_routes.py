@@ -143,6 +143,16 @@ def admin_borrow():
     users = User.query.all()
     books = Book.query.all()
 
+    # Calculate and update fines for overdue records
+    today = datetime.utcnow().date()
+    for borrowing in books_borrowing:
+        if borrowing.due_date < today:
+            days_overdue = (today - borrowing.due_date).days
+            # Calculate fine (2000 per day)
+            fine = days_overdue * 2000
+            borrowing.fine = fine
+            db.session.commit()
+
     return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing, users=users, books=books)
 
 @admin_bp.route("/add-borrowing-handler", methods=["GET", "POST"])
@@ -250,3 +260,70 @@ def admin_users():
     users = User.query.all()
 
     return render_template('admin/user_handler.html', users=users)
+
+@admin_bp.route("/add-user", methods=["GET", "POST"])
+def add_user():
+    if 'logged_in' not in session:
+        return render_template('admin/admin_login.html')
+    
+    if not session['logged_in']:
+        return render_template('admin/admin_login.html')
+
+    if request.method == "POST":
+        new_nomor_induk = request.form["nim"]
+        new_name = request.form["name"]
+        new_password = request.form["password"]
+        new_email = request.form["email"]
+
+        new_user = User(nomor_induk=new_nomor_induk, name=new_name, password=new_password, 
+                        email=new_email)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+    return redirect(url_for('admin.admin_users'))
+
+@admin_bp.route("/edit-user/<int:nomor_induk>", methods=["GET", "POST"])
+def edit_user(nomor_induk):
+    if 'logged_in' not in session:
+        return render_template('admin/admin_login.html')
+    
+    if not session['logged_in']:
+        return render_template('admin/admin_login.html')
+
+    user = User.query.filter_by(
+        nomor_induk=nomor_induk
+    ).first()
+
+    if request.method == "POST":
+        new_nomor_induk = user.nomor_induk
+        new_name = request.form["name"]
+        new_password = request.form["password"]
+        new_email = request.form["email"]
+
+        if user:
+            user.nomor_induk = new_nomor_induk
+            user.name = new_name
+            user.password = new_password
+            user.email = new_email
+            db.session.commit()
+
+    return redirect(url_for('admin.admin_users', nomor_induk=nomor_induk))
+
+@admin_bp.route("/delete-user/<int:nomor_induk>")
+def delete_user(nomor_induk):
+    if 'logged_in' not in session:
+        return render_template('admin/admin_login.html')
+    
+    if not session['logged_in']:
+        return render_template('admin/admin_login.html')
+
+    user = User.query.filter_by(
+        nomor_induk=nomor_induk
+    ).first()
+
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+
+    return redirect(url_for('admin.admin_users', nomor_induk=nomor_induk))
