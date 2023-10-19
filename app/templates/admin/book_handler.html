@@ -28,8 +28,77 @@
                         <td>{{ book.writer|limit_text(20) }}</td>
                         <td class="text-wrap overflow-hidden" style="width: 30rem; height: 6rem;">{{ book.description|limit_text(50) }}</td>
                         <td>{{ book.genre.name }}</td>
-                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#book{{book.book_id}}editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#book{{book.book_id}}deleteModal" type="button">Delete</button></td>
                     </tr>
+
+                    <div class="modal fade" id="book{{book.book_id}}editModal" tabindex="-1" aria-labelledby="book{{book.book_id}}editModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="book{{book.book_id}}editModalLabel">Edit Book</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form
+                                action="/edit-book/{{ book.title }}/{{ book.book_id }}"
+                                method="POST"
+                                enctype="multipart/form-data"
+                              >
+                                  <div class="mb-3">
+                                    <label for="title" class="form-label">Title</label>
+                                    <input type="text" value="{{ book.title }}" class="form-control" id="title" name="title">
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="cover" class="form-label">Book Cover</label>
+                                      <input type="file" value="{{ book.book_cover}}" class="form-control" id="cover">
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="author" class="form-label">Author</label>
+                                      <input type="text" value="{{ book.writer }}" class="form-control" id="author">
+                                  </div>
+                                  <div class="mb-3">                    
+                                    <label for="genre" class="form-label">Genre</label>
+                                    <select for="genre" value="{{ book.genre.name }}" class="form-select" id="book" name="genre">
+                                        <option value="3">Biography</option>
+                                        <option value="5">Essays</option>
+                                        <option value="1">Novel</option>
+                                        <option value="2">Religion & Spirituality</option>
+                                        <option value="4">Science & Technology</option>
+                                    </select>
+                                  </div>   
+                                  <div class="mb-3">
+                                      <label for="description">Description</label>
+                                      <textarea class="form-control" id="floatingTextarea">{{ book.description }}</textarea>
+                                  </div>
+                                </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success">Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              
+                    <div class="modal fade" id="book{{book.book_id}}deleteModal" tabindex="-1" aria-labelledby="book{{book.book_id}}ModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="book{{book.book_id}}deleteModal">Delete Book</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <p fw-normal>Are you sure want to delete this book "{{ book.title }}"?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="/delete-book/{{ book.title }}/{{ book.book_id }}">
+                              <button type="button" class="btn btn-danger">Yes, Delete this book</button>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>  
                     {% endfor %}
                     {% endif %}
                     </tbody>
@@ -52,7 +121,7 @@
                 >
                     <div class="mb-3">
                       <label for="title" class="form-label">Title</label>
-                      <input name="title" type="text" class="form-control" id="title">
+                      <input name="title" type="text" class="form-control" id="title" name="title">
                     </div>
                     <div class="mb-3">
                         <label for="cover" class="form-label">Book Cover</label>
@@ -64,10 +133,12 @@
                     </div>
                     <div class="mb-3">                    
                       <label for="genre" class="form-label">Genre</label>
-                      <select class="form-select" id="book">
-                          <option value="genre1">genre 1</option>
-                          <option value="genre2">genre 2</option>
-                          <option value="genre3">book 3</option>
+                      <select for="genre" class="form-select" id="book" name="genre">
+                          <option value="3">Biography</option>
+                          <option value="5">Essays</option>
+                          <option value="1">Novel</option>
+                          <option value="2">Religion & Spirituality</option>
+                          <option value="4">Science & Technology</option>
                       </select>
                     </div>  
                     <div class="mb-3">
@@ -84,66 +155,7 @@
         </div>
       </div>
 
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="editModalLabel">Edit Book</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                      <label for="title" class="form-label">Title</label>
-                      <input type="text" class="form-control" id="title">
-                    </div>
-                    <div class="mb-3">
-                        <label for="cover" class="form-label">Book Cover</label>
-                        <input type="file" class="form-control" id="cover">
-                    </div>
-                    <div class="mb-3">
-                        <label for="author" class="form-label">Author</label>
-                        <input type="text" class="form-control" id="author">
-                    </div>
-                    <div class="mb-3">                    
-                      <label for="genre" class="form-label">Genre</label>
-                      <select class="form-select" id="book">
-                          <option value="genre1">genre 1</option>
-                          <option value="genre2">genre 2</option>
-                          <option value="genre3">book 3</option>
-                      </select>
-                    </div>   
-                    <div class="mb-3">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="floatingTextarea"></textarea>
-                    </div>
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Book</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p fw-normal>Are you sure want to delete this book "[Book Name]"?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger">Yes, Delete this book</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 </div>
 
 {% endblock %}

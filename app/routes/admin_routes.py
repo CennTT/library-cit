@@ -6,6 +6,8 @@ from models import db, User, AdminUser, Book, BookBorrowing, PrinterBalanceDepos
 
 admin_bp = Blueprint('admin', __name__)
 
+# Login and Logout
+
 @admin_bp.route('/admin-login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'GET':
@@ -32,6 +34,9 @@ def admin_logout():
     session.pop('logged_in', None)
     return redirect(url_for('admin.admin_login'))
 
+
+# Books
+
 @admin_bp.route('/admin-book')
 def admin_book():
     if 'logged_in' not in session:
@@ -53,13 +58,16 @@ def add_book():
         return render_template('admin/admin_login.html')
 
     if request.method == "POST":
-        new_title = request.form.get("title")
+        new_title = request.form["title"]
         new_book_cover = request.form.get("cover")
         new_writer = request.form.get("author")
         new_description = request.form.get("description")
+        new_genre_id = request.form["genre"]
+
+        print(new_genre_id)
 
         new_book = Book(title=new_title, book_cover=new_book_cover, writer=new_writer, 
-                        description=new_description, status="Available")
+                        description=new_description, status="Available", genre_id=new_genre_id)
 
         db.session.add(new_book)
         db.session.commit()
@@ -83,13 +91,14 @@ def edit_book(title, book_id):
         new_book_cover = request.form.get("cover")
         new_writer = request.form.get("author")
         new_description = request.form.get("description")
-
+        new_genre_id = request.form.get("genre")
 
         if book:
             book.title = new_title
             book.book_cover = new_book_cover
             book.writer = new_writer
             book.description = new_description
+            book.genre_id = new_genre_id
             db.session.commit()
 
     return redirect(url_for('admin.admin_book', title=title, id=book_id))
@@ -107,10 +116,13 @@ def delete_book(title, book_id):
     ).first()
 
     if book:
-        book.delete()
+        db.session.delete(book)
         db.session.commit()
 
     return redirect(url_for('admin.admin_book', title=title, id=book_id))
+
+
+# Books Borrowing Handler
 
 @admin_bp.route('/admin-borrowing-handler')
 def admin_borrow():
@@ -121,7 +133,6 @@ def admin_borrow():
         return render_template('admin/admin_login.html')
     
     books_borrowing = BookBorrowing.query.all()
-    # Kalau mau ambil book title, coba {{ books_borrowing.book.title }}
 
     return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing)
 
@@ -213,6 +224,9 @@ def delete_borrow(id):
 
     return redirect(url_for('admin.admin_borrow', id=id))
 
+
+# Deposit
+
 @admin_bp.route('/admin-deposit')
 def admin_deposit():
     if 'logged_in' not in session:
@@ -225,17 +239,92 @@ def admin_deposit():
 
     return render_template('admin/deposit_handler.html', deposits=deposits)
 
-@admin_bp.route('/admin-goods')
-def admin_goods():
+# @admin_bp.route("/add-book", methods=["GET", "POST"])
+# def add_book():
+#     if 'logged_in' not in session:
+#         return render_template('admin/admin_login.html')
+    
+#     if not session['logged_in']:
+#         return render_template('admin/admin_login.html')
+
+#     if request.method == "POST":
+#         new_title = request.form.get("title")
+#         new_book_cover = request.form.get("cover")
+#         new_writer = request.form.get("author")
+#         new_description = request.form.get("description")
+
+#         new_book = Book(title=new_title, book_cover=new_book_cover, writer=new_writer, 
+#                         description=new_description, status="Available")
+
+#         db.session.add(new_book)
+#         db.session.commit()
+
+#     return redirect(url_for('admin.admin_book'))
+
+# @admin_bp.route("/edit-book/<path:title>/<int:book_id>", methods=["GET", "POST"])
+# def edit_book(title, book_id):
+#     if 'logged_in' not in session:
+#         return render_template('admin/admin_login.html')
+    
+#     if not session['logged_in']:
+#         return render_template('admin/admin_login.html')
+
+#     book = Book.query.filter_by(
+#         book_id=book_id
+#     ).first()
+
+#     if request.method == "POST":
+#         new_title = request.form.get("title")
+#         new_book_cover = request.form.get("cover")
+#         new_writer = request.form.get("author")
+#         new_description = request.form.get("description")
+
+
+#         if book:
+#             book.title = new_title
+#             book.book_cover = new_book_cover
+#             book.writer = new_writer
+#             book.description = new_description
+#             db.session.commit()
+
+#     return redirect(url_for('admin.admin_book', title=title, id=book_id))
+
+# @admin_bp.route("/delete-book/<path:title>/<int:book_id>")
+# def delete_book(title, book_id):
+#     if 'logged_in' not in session:
+#         return render_template('admin/admin_login.html')
+    
+#     if not session['logged_in']:
+#         return render_template('admin/admin_login.html')
+
+#     book = Book.query.filter_by(
+#         book_id=book_id
+#     ).first()
+
+#     if book:
+#         book.delete()
+#         db.session.commit()
+
+#     return redirect(url_for('admin.admin_book', title=title, id=book_id))
+
+
+# Goods and Rooms
+
+@admin_bp.route('/admin-goods-rooms')
+def admin_goods_rooms():
     if 'logged_in' not in session:
         return render_template('admin/admin_login.html')
     
     if not session['logged_in']:
         return render_template('admin/admin_login.html')
 
+    rooms = Rooms.query.all()
     goods = Goods.query.all()
 
-    return render_template('admin/goods_rooms_handler.html', goods=goods)
+    return render_template('admin/goods_rooms_handler.html', rooms=rooms, goods=goods)
+
+
+# Users
 
 @admin_bp.route('/admin-users')
 def admin_users():
