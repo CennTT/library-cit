@@ -4,6 +4,8 @@
 	<h2 class="text-center pb-3 text-danger">Borrowing Books</h2>
 	<h5 class="pb-2 text-dark fw-bold">Borrowed Books</h2>
 	<div class="row">
+	{% for book_borrowing in borrowed_books %}
+	{% if book_borrowing[1].return_date == None %}
 		<div class="col-12 col-md-3 mt-1 mb-1">
 			<div id="" class="card cb1" style="height:100%">
 				<img
@@ -11,19 +13,13 @@
 					class="card-img-top w-50 mx-auto d-block pt-4"
 				/>
 				<div class="card-body">
-					<h5 class="card-title">Buku Panduan Memasak</h5>
-				</div>
-				<div class="mb-5 d-flex justify-content-around">
-					<a
-						href=""
-					>
-					<button class="btn btn-outline-success rounded-pill me-2" data-bs-toggle="modal" data-bs-target="#extendModal" type="button">Extend</button>
-					</a>
+					<h5 class="card-title">{{ book_borrowing[0].title }}</h5>
 				</div>
 			</div>
 		</div>
+		{% endif %}
+	{% endfor %}
 	</div>
-
 	<h5 class="pt-4 text-dark fw-bold">History</h2>
 	<table class="table table-hover">
 		<thead>
@@ -36,13 +32,17 @@
 		</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<th>1</th>
-				<td>Si Kancil Memakan Timun</td>
-				<td>10/09/2023</td>
-				<td>12/09/2023</td>
-				<td>0</td>
-			</tr>
+			{% for book_borrowing in borrowed_books %}
+			{% if book_borrowing[1].return_date != None %}
+				<tr>
+					<th>{{ loop.index }}</th>
+					<td>{{ book_borrowing[0].title }}</td> 
+					<td>{{ book_borrowing[1].borrowing_date.strftime('%d/%m/%Y') }}</td>  
+					<td>{{ book_borrowing[1].return_date.strftime('%d/%m/%Y') }}</td> 
+					<td>{{ book_borrowing[1].fine or 0 }}</td>
+				</tr>
+			{% endif %}
+			{% endfor %}
 		</tbody>
 	</table>
 	{% endblock %}

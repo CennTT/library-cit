@@ -39,49 +39,6 @@
                               </ul>
                           </div>
                       </td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button></td>
-                  </tr>
-                  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="editModalLabel">Edit Deposit</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="mb-3">
-                                  <label for="date" class="form-label">Date</label>
-                                  <input type="date" name="date" class="form-control" id="date">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nim" class="form-label">NIM</label>
-                                        <input type="text" name="nim" class="form-control" id="nim" disabled>
-                                </div>                        
-                                <div class="mb-3">
-                                    <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
-                                    <input type="number" name="deposit-balances" class="form-control" id="deposit-balances">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="proof" class="form-label">Proof</label>
-                                    <input type="file" name="proof" class="form-control" id="proof">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" name="status" id="status">
-                                        <option value="status1">Pending</option>
-                                        <option value="status2">Done</option>
-                                    </select>
-                                </div>    
-                              </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-success">Save</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
               </tbody>
           </table>
       </div>

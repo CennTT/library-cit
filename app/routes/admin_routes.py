@@ -2,7 +2,7 @@ import base64
 from datetime import datetime, timedelta
 from sqlalchemy import func
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
-from models import db, User, AdminUser, Book, BookBorrowing, PrinterBalanceDeposit, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
+from models import db, User, AdminUser, Book, BookBorrowing, PrinterBalanceDeposit, RatingReview, PrinterBalance
 
 
 admin_bp = Blueprint('admin', __name__)
@@ -245,24 +245,7 @@ def admin_deposit():
         status="Pending"
         ).all()
 
-    return render_template('admin/deposit_handler.html', deposits=deposits)
-
-
-# Goods and Rooms
-
-@admin_bp.route('/admin-goods-rooms')
-def admin_goods_rooms():
-    if 'logged_in' not in session:
-        return render_template('admin/admin_login.html')
-    
-    if not session['logged_in']:
-        return render_template('admin/admin_login.html')
-
-    rooms = Rooms.query.all()
-    goods = Goods.query.all()
-
-    return render_template('admin/goods_rooms_handler.html', rooms=rooms, goods=goods)
-
+    return render_template('admin/deposit_handler.html', deposits=deposits) 
 
 # Users
 

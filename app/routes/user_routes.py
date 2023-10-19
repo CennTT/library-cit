@@ -2,7 +2,7 @@ import base64
 import datetime
 from sqlalchemy import func
 from flask import Flask, flash, request, render_template, redirect, url_for, session, Blueprint
-from models import PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms, Genre
+from models import BookBorrowing, PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Genre
 
 
 user_bp = Blueprint('user', __name__)
@@ -65,6 +65,40 @@ def homepage():
     return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres)
 
 
+@user_bp.route("/search-book", methods=["POST"])
+def search_book():
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    book_name = request.form["book_name"]
+
+    if book_name:
+        books = Book.query.filter(Book.title.like(f"%{book_name}%")).all()
+    else:
+        books = []
+    genres = Genre.query.all()
+    
+    account_name = session.get('name')
+    
+    average_ratings = {}
+    
+    for book in books:
+        average_rating = db.session.query(db.func.avg(RatingReview.rating)).filter_by(book_id=book.book_id).scalar()
+
+        average_rating = float(average_rating) if average_rating is not None else 0.0
+
+        average_ratings[book.book_id] = average_rating
+        
+        genre = Genre.query.get(book.genre_id)  
+        genre_name = genre.name if genre else None
+        book.genre_name = genre_name 
+        
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres)
+
+
 @user_bp.route("/book/<int:genre_id>")
 def genre_page(genre_id):
     if 'logged_in' not in session:
@@ -119,11 +153,25 @@ def book_details(title, id):
 
     average_rate = float(average_rate) if average_rate is not None else 0.0
 
-    # Retrieve the user_id from the session
     user_id = session.get('nim')
+    
+    today = datetime.datetime.today()
+
+    two_weeks_later = today + datetime.timedelta(days=14)
+
+    today_str = today.strftime('%Y-%m-%d')
+    two_weeks_later_str = two_weeks_later.strftime('%d-%m-%Y')
+    
+    book_borrowed = (
+    BookBorrowing.query
+    .filter(
+        (BookBorrowing.nomor_induk == user_id) &
+        (BookBorrowing.book_id == id)
+    )
+    .all()
+    )
 
     account_name = session.get('name')
-    # Query the specific user's review for the book
     user_review = RatingReview.query.filter_by(book_id=id, user_id=user_id).first()
     ratings_reviews = (
     db.session.query(RatingReview, User) 
@@ -131,7 +179,39 @@ def book_details(title, id):
     .join(User)
     .all()
     )
-    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review, account_name=account_name)
+    return render_template('nonadmin/book_details.html', book=book, ratings_reviews=ratings_reviews, average_rate=average_rate, num_reviews=num_reviews, user_review=user_review, account_name=account_name, due_date=two_weeks_later_str, book_borrowed=book_borrowed)
+
+
+@user_bp.route("/borrow/<path:title>/<int:book_id>")
+def borrow(title, book_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+    
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    user_id = session.get('nim')
+    
+    borrowing_date = datetime.datetime.today().date()
+    due_date = borrowing_date + datetime.timedelta(days=14)
+
+    # Create a new book borrowing record
+    new_borrowing = BookBorrowing(
+        book_id=book_id,
+        borrowing_date=borrowing_date,
+        due_date=due_date,
+        nomor_induk=user_id
+    )
+    
+    book = Book.query.get(book_id)
+    if book:
+        book.status = "Borrowed"  
+
+    db.session.add(new_borrowing)
+    db.session.commit()
+    
+    return redirect(url_for("user.book_details", title=title, id=book_id))
+
 
 @user_bp.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
 def edit_review(title, book_id):
@@ -197,6 +277,9 @@ def printer_balance():
     account_name = session.get('name')
     
     user_balance = PrinterBalance.query.filter_by(nomor_induk=id).first()
+    if user_balance is None:
+        user_balance = PrinterBalance
+        user_balance.balance = 0 
 
     deposit_history = PrinterBalanceDeposit.query.filter_by(nomor_induk=id).all()
     if deposit_history:
@@ -232,108 +315,11 @@ def top_up():
         db.session.add(new_deposit)
         db.session.commit()
 
-        user_balance = PrinterBalance.query.filter_by(nomor_induk=id).first()
-        if user_balance:
-            user_balance.balance += int(amount)
-            db.session.commit()
-
-        flash('Top-up submitted successfully', 'success')
-        return render_template('nonadmin/deposit.html')
+        return redirect(url_for("user.printer_balance"))
     
     else:
-        return render_template('nonadmin/deposit.html')
+        return redirect(url_for("user.printer_balance"))
     
-
-@user_bp.route("/goods")
-def goods_details():
-    if 'logged_in' not in session:
-        return render_template('nonadmin/login.html')
-    
-    if not session['logged_in']:
-        return render_template('nonadmin/login.html')
-    
-    goods = Goods.query.all()
-    for item in goods:
-        if item.image:
-            item.image = base64.b64encode(item.image).decode('utf-8')
-    account_name = session.get('name')
-    return render_template('nonadmin/goods.html', goods=goods, account_name=account_name)
-
-
-@user_bp.route("/borrow-goods/<int:item_id>", methods=["POST"])
-def reserve_item(item_id):
-    if 'logged_in' not in session:
-        return render_template('nonadmin/login.html')
-    
-    if not session['logged_in']:
-        return render_template('nonadmin/login.html')
-    
-    borrow_date = request.form.get("borrow")
-    return_date = request.form.get("return")
-    
-    good_id = item_id
-    nomor_induk = session.get("nim")
-
-    borrowing_goods = BorrowingGoods(
-        good_id=good_id,
-        borrowing_date=borrow_date,
-        return_date=return_date,
-        status="Pending",
-        nomor_induk=nomor_induk
-    )
-
-    db.session.add(borrowing_goods)
-    db.session.commit()
-    
-    return render_template('nonadmin/goods.html')
-    
-    
-
-@user_bp.route("/rooms")
-def rooms_details():
-    if 'logged_in' not in session:
-        return render_template('nonadmin/login.html')
-    
-    if not session['logged_in']:
-        return render_template('nonadmin/login.html')
-    
-    rooms = Rooms.query.all()
-    for room in rooms:
-        if room.image:
-            room.image = base64.b64encode(room.image).decode('utf-8')
-
-    account_name = session.get('name')
-    return render_template('nonadmin/rooms.html', rooms=rooms, account_name=account_name)
-
-
-@user_bp.route("/reserve_room/<int:room_id>", methods=["POST"])
-def reserve_room(room_id):
-    if 'logged_in' not in session:
-        return render_template('nonadmin/login.html')
-    
-    if not session['logged_in']:
-        return render_template('nonadmin/login.html')
-
-    start_time = request.form.get("start_time")
-    end_time = request.form.get("end_time")
-    
-    user_id = session.get('nim')
-    today = datetime.date.today()
-    reservation = BorrowingRooms(
-        room_id=room_id,
-        borrowing_date=today,  
-        time_started=start_time,
-        time_ended=end_time,
-        nomor_induk=user_id,
-        status="Reserved", 
-    )
-
-    db.session.add(reservation)
-    db.session.commit()
-
-    return redirect(url_for('user.rooms_details')) 
-
-
 
 @user_bp.route("/procedures")
 def procedures():
@@ -368,4 +354,21 @@ def show_image(image_id):
 
 @user_bp.route("/borrow-book")
 def borrow_book():
-    return render_template('nonadmin/borrowing_book.html')
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+    
+    nomor_induk = session.get("nim")
+    
+    borrowed_books = (
+        db.session.query(Book, BookBorrowing)
+        .join(BookBorrowing, Book.book_id == BookBorrowing.book_id)
+        .filter(BookBorrowing.nomor_induk == nomor_induk)
+        .all()
+    )
+    
+    print(borrowed_books)
+    
+    return render_template('nonadmin/borrowing_book.html', borrowed_books=borrowed_books)

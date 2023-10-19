@@ -33,7 +33,7 @@ class Book(db.Model):
     writer = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(255), nullable=False)
-    book_cover = db.Column(LargeBinary, nullable=True) 
+    book_cover = db.Column(db.String(255), nullable=True)
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.genre_id'), nullable=True)
 
     genre = db.relationship('Genre', backref='books')
@@ -99,66 +99,6 @@ class PrinterBalanceDeposit(db.Model):
     def __repr__(self):
         return f'<PrinterBalanceDeposit deposit_id={self.deposit_id}>'
 
-    
-class Goods(db.Model):
-    __tablename__ = 'goods'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    image = db.Column(LargeBinary, nullable=True) 
-    status = db.Column(db.String(255), nullable=False)
-
-    def __repr__(self):
-        return f'<Goods id={self.id}>'
-    
-    
-class BorrowingGoods(db.Model):
-    __tablename__ = 'borrowing_goods'
-
-    id = db.Column(db.Integer, primary_key=True)
-    good_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
-    borrowing_date = db.Column(db.Date, nullable=False)
-    return_date = db.Column(db.Date, nullable=True)
-    status = db.Column(db.String(255), nullable=False)
-    nomor_induk = db.Column(db.String(9), db.ForeignKey('users.nomor_induk'), nullable=False)
-
-    good = db.relationship('Goods', backref='borrowing_goods')
-    user = db.relationship('User', backref='borrowing_goods')
-
-    def __repr__(self):
-        return f'<BorrowingGoods id={self.id}>'
-    
-    
-class Rooms(db.Model):
-    __tablename__ = 'rooms'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    capacity = db.Column(db.Integer, nullable=False)
-    image = db.Column(LargeBinary, nullable=True) 
-    status = db.Column(db.String(255), nullable=False)
-
-    def __repr__(self):
-        return f'<Rooms id={self.id}>'
-    
-
-class BorrowingRooms(db.Model):
-    __tablename__ = 'borrowing_rooms'
-
-    id = db.Column(db.Integer, primary_key=True)
-    room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'), nullable=False)
-    borrowing_date = db.Column(db.Date, nullable=False)
-    time_started = db.Column(db.Time, nullable=False)
-    time_ended = db.Column(db.Time, nullable=True)
-    nomor_induk = db.Column(db.String(64), db.ForeignKey('users.nomor_induk'), nullable=False)
-    status = db.Column(db.String(255), nullable=False)
-
-    room = db.relationship('Rooms', backref='borrowing_rooms')
-    user = db.relationship('User', backref='borrowing_rooms')
-
-    def __repr__(self):
-        return f'<BorrowingRooms id={self.id}>'
-    
 
 class RatingReview(db.Model):
     __tablename__ = 'rating_reviews'
