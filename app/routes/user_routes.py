@@ -337,4 +337,4 @@ def show_image(image_id):
 
 @user_bp.route("/borrow-book")
 def borrow_book():
-    return render_template('borrowing_book.html')
+    return render_template('nonadmin/borrowing_book.html')

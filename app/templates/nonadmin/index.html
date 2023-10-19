@@ -6,6 +6,22 @@
 		<ion-icon name="notifications-outline" class="p-2 ms-2 me-2 bg-warning bg-opacity-50 rounded" style="font-size: 1.5rem;"></ion-icon>
 		<a href="" class="pt-2 fs-6 text-decoration-none text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#extendModal">Reminder: There are 2 books that need to be renewed before October 12, 2023 (click here)</a href="">
 	</div>
+	<div class="container-fluid bg-light my-2">
+		<div class="d-flex justify-content-end p-2"> 
+			<form role="search" class="d-flex me-2">
+				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success" type="submit">Search</button>
+			</form>
+			<select name="Genre" id="" class="btn btn-secondary dropdown-toggle p-2">
+				<option value="">Genre</option>
+				<option value="1">Genre 1</option>
+				<option value="2">Genre 2</option>
+				<option value="3">Genre 3</option>
+				<option value="4">Genre 4</option>
+			</select>
+		</div>
+	</div>
+
 	{% if books %}
 	<div class="row">
 		{% for book in books %}
@@ -46,11 +62,11 @@
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<p>By clicking 'Extend,' your borrowed books ["book name"] + ["book name"] will be extended until October 20, 2023</p>
+				<p>Please extend the books before October 20, 2023</p>
 			</div>
 			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</bu tton>
-			  <button type="button" class="btn btn-success">Extend</button>
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <a class="btn btn-success" href="{{ url_for('user.borrow_book') }}">Extend</a>
 			</div>
 		  </div>
 		</div>
