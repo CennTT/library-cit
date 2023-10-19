@@ -146,7 +146,7 @@
 		transition: 0.5s;
 	}
 
-	.outer.active, .topnav.active {
+	.outer.active{
 		width: calc(100% - 80px);
 		left: 80px;
 	}
@@ -154,10 +154,9 @@
 	.topnav{
 		background: white; 
 		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); 
-		position: fixed; 
+		position: sticky; 
 		height: 3rem;
-		width: calc(100% - 300px);
-		left: 300px;
+		top: 0;
 		z-index: 1005;
 	}
 
@@ -223,11 +222,11 @@
 			width: 300px;
 			left: 0;
 		}
-		.outer, .topnav {
+		.outer{
 			width: 100%;
 			left: 0;
 		}
-		.outer.active, .topnav.active {
+		.outer.active{
 			left: 300px;
 		}
 		.toggle{
