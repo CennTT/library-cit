@@ -2,9 +2,9 @@
 <div class="inner m-5"> 
   <h2 class="text-center pt-1 pb-3 text-danger">Student Deposits</h2>
   <div class="container bg-white px-2 py-3 rounded">
-      <div class=" d-md-flex justify-content-md-end pb-2">
+      <!-- <div class=" d-md-flex justify-content-md-end pb-2">
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Add Deposit</button>
-      </div>                
+      </div>                 -->
       <div class="table-responsive">
 
           <table class="table table-rounded table-hover overflow-x-auto">
@@ -39,156 +39,52 @@
                               </ul>
                           </div>
                       </td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button></td>
                   </tr>
-                  <tr>
-                      <th scope="row">2</th>
-                      <td>02/10/2023</td>
-                      <td>212100XXX</td>
-                      <td>5.000</td>
-                      <td>100.000</td>
-                      <td><a href="">Open File</a></td>
-                      <td>
-                          <div class="dropdown">
-                              <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown button
-                              </button>
-                              <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item">Pending</a></li>
-                                  <li><a class="dropdown-item">Done</a></li>
-                              </ul>
-                          </div>
-                      </td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                  </tr>
-                  <tr>
-                      <th scope="row">3</th>
-                      <td>03/10/2023</td>
-                      <td>212100XXX</td>
-                      <td>5.000</td>
-                      <td>100.000</td>
-                      <td><a href="">Open File</a></td>
-                      <td>
-                          <div class="dropdown">
-                              <button class="btn btn-secondary btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown button
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li><a class="dropdown-item">Pending</a></li>
-                                <li><a class="dropdown-item">Done</a></li>
-                              </ul>
-                          </div>
-                      </td>   
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>                        
-                  </tr>
+                  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="editModalLabel">Edit Deposit</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                  <label for="date" class="form-label">Date</label>
+                                  <input type="date" name="date" class="form-control" id="date">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nim" class="form-label">NIM</label>
+                                        <input type="text" name="nim" class="form-control" id="nim" disabled>
+                                </div>                        
+                                <div class="mb-3">
+                                    <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
+                                    <input type="number" name="deposit-balances" class="form-control" id="deposit-balances">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="proof" class="form-label">Proof</label>
+                                    <input type="file" name="proof" class="form-control" id="proof">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" name="status" id="status">
+                                        <option value="status1">Pending</option>
+                                        <option value="status2">Done</option>
+                                    </select>
+                                </div>    
+                              </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-success">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </tbody>
           </table>
       </div>
   </div>
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="addModalLabel">Add New Deposit</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                      <label for="date" class="form-label">Date</label>
-                      <input type="date" class="form-control" id="date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nim" class="form-label">NIM</label>
-                        <select class="form-select" id="nim">
-                            <option value="nim1">NIM 1</option>
-                            <option value="nim2">NIM 2</option>
-                            <option value="nim3">NIM 3</option>
-                        </select>
-                    </div>                        
-                    <div class="mb-3">
-                        <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
-                        <input type="number" class="form-control" id="deposit-balances">
-                    </div>
-                    <div class="mb-3">
-                        <label for="proof" class="form-label">Proof</label>
-                        <input type="file" class="form-control" id="proof">
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status">
-                            <option value="status1">Pending</option>
-                            <option value="status2">Done</option>
-                        </select>
-                    </div>    
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success">Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="editModalLabel">Edit Deposit</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                      <label for="date" class="form-label">Date</label>
-                      <input type="date" class="form-control" id="date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nim" class="form-label">NIM</label>
-                            <input type="text" class="form-control" id="nim" disabled>
-                    </div>                        
-                    <div class="mb-3">
-                        <label for="deposit-balances" class="form-label">Deposit Balances (Rp)</label>
-                        <input type="number" class="form-control" id="deposit-balances">
-                    </div>
-                    <div class="mb-3">
-                        <label for="proof" class="form-label">Proof</label>
-                        <input type="file" class="form-control" id="proof">
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status">
-                            <option value="status1">Pending</option>
-                            <option value="status2">Done</option>
-                        </select>
-                    </div>    
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Deposit</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p fw-normal>Are you sure want to delete [NIM]'s deposit?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger">Yes, Delete this deposit</button>
-            </div>
-          </div>
-        </div>
-      </div>
 </div>
 {% endblock %}
