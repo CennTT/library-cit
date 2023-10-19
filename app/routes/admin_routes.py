@@ -1,8 +1,10 @@
 import base64
 from datetime import datetime, timedelta
+import os
 from sqlalchemy import func
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
 from models import db, User, AdminUser, Book, BookBorrowing, PrinterBalanceDeposit, RatingReview, PrinterBalance
+import app
 
 
 admin_bp = Blueprint('admin', __name__)
@@ -47,68 +49,11 @@ def admin_book():
         return render_template('admin/admin_login.html')
     
     books = Book.query.all()
-
-    for book in books:
-        if book.book_cover != None:
-            book.book_cover = base64.b64encode(book.book_cover).decode('utf-8')
         
     return render_template('admin/book_handler.html', books=books)
 
-@admin_bp.route("/add-book", methods=["GET", "POST"])
-def add_book():
-    if 'logged_in' not in session:
-        return render_template('admin/admin_login.html')
-    
-    if not session['logged_in']:
-        return render_template('admin/admin_login.html')
 
-    if request.method == "POST":
-        new_title = request.form["title"]
-        uploaded_file = request.files['cover']
-        new_book_cover = uploaded_file.read() if uploaded_file else None
-        new_writer = request.form.get("author")
-        new_description = request.form.get("description")
-        new_genre_id = request.form["genre"]
 
-        new_book = Book(title=new_title, book_cover=new_book_cover, writer=new_writer, 
-                        description=new_description, status="Available", genre_id=new_genre_id)
-
-        db.session.add(new_book)
-        db.session.commit()
-
-    return redirect(url_for('admin.admin_book'))
-
-@admin_bp.route("/edit-book/<path:title>/<int:book_id>", methods=["GET", "POST"])
-def edit_book(title, book_id):
-    if 'logged_in' not in session:
-        return render_template('admin/admin_login.html')
-    
-    if not session['logged_in']:
-        return render_template('admin/admin_login.html')
-
-    book = Book.query.filter_by(
-        book_id=book_id
-    ).first()
-
-    if request.method == "POST":
-        new_title = request.form.get("title")
-        uploaded_file = request.files['cover']
-        new_book_cover = uploaded_file.read() if uploaded_file else book.book_cover
-        new_writer = request.form["author"]
-        new_description = request.form.get("description")
-        if new_description == None:
-            new_description = request.form.get("before_description")
-        new_genre_id = request.form["genre"]
-
-        if book:
-            book.title = new_title
-            book.book_cover = new_book_cover
-            book.writer = new_writer
-            book.description = new_description
-            book.genre_id = new_genre_id
-            db.session.commit()
-
-    return redirect(url_for('admin.admin_book', title=title, id=book_id))
 
 @admin_bp.route("/delete-book/<path:title>/<int:book_id>")
 def delete_book(title, book_id):
@@ -246,6 +191,34 @@ def admin_deposit():
         ).all()
 
     return render_template('admin/deposit_handler.html', deposits=deposits) 
+
+
+# Acc Deposit
+@admin_bp.route('/accept-deposit/<int:id>/<path:nomor_induk>')
+def accept_deposit(id, nomor_induk):
+    if 'logged_in' not in session:
+        return render_template('admin/admin_login.html')
+    
+    if not session['logged_in']:
+        return render_template('admin/admin_login.html')
+    
+    deposit = PrinterBalanceDeposit.query.filter_by(deposit_id=id).first()
+    user_balance = PrinterBalance.query.filter_by(nomor_induk=nomor_induk).first()
+    
+    if not user_balance:
+        new_user_balance = PrinterBalance(
+            nomor_induk=nomor_induk,
+            balance=deposit.deposited_balance
+        )
+        db.session.add(new_user_balance)
+    else:
+        user_balance.balance += deposit.deposited_balance
+        
+    deposit.status = 'Accepted'
+    db.session.commit()
+    
+    return redirect(url_for('admin.admin_deposit'))
+
 
 # Users
 
