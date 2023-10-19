@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime, timedelta
 from sqlalchemy import func
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
 from models import db, User, AdminUser, Book, BookBorrowing, PrinterBalanceDeposit, RatingReview, PrinterBalance, Goods, BorrowingGoods, Rooms, BorrowingRooms
@@ -47,6 +48,10 @@ def admin_book():
     
     books = Book.query.all()
 
+    for book in books:
+        if book.book_cover != None:
+            book.book_cover = base64.b64encode(book.book_cover).decode('utf-8')
+        
     return render_template('admin/book_handler.html', books=books)
 
 @admin_bp.route("/add-book", methods=["GET", "POST"])
@@ -59,12 +64,11 @@ def add_book():
 
     if request.method == "POST":
         new_title = request.form["title"]
-        new_book_cover = request.form.get("cover")
+        uploaded_file = request.files['cover']
+        new_book_cover = uploaded_file.read() if uploaded_file else None
         new_writer = request.form.get("author")
         new_description = request.form.get("description")
         new_genre_id = request.form["genre"]
-
-        print(new_genre_id)
 
         new_book = Book(title=new_title, book_cover=new_book_cover, writer=new_writer, 
                         description=new_description, status="Available", genre_id=new_genre_id)
@@ -88,10 +92,13 @@ def edit_book(title, book_id):
 
     if request.method == "POST":
         new_title = request.form.get("title")
-        new_book_cover = request.form.get("cover")
-        new_writer = request.form.get("author")
+        uploaded_file = request.files['cover']
+        new_book_cover = uploaded_file.read() if uploaded_file else book.book_cover
+        new_writer = request.form["author"]
         new_description = request.form.get("description")
-        new_genre_id = request.form.get("genre")
+        if new_description == None:
+            new_description = request.form.get("before_description")
+        new_genre_id = request.form["genre"]
 
         if book:
             book.title = new_title
@@ -133,8 +140,10 @@ def admin_borrow():
         return render_template('admin/admin_login.html')
     
     books_borrowing = BookBorrowing.query.all()
+    users = User.query.all()
+    books = Book.query.all()
 
-    return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing)
+    return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing, users=users, books=books)
 
 @admin_bp.route("/add-borrowing-handler", methods=["GET", "POST"])
 def add_borrow():
@@ -145,23 +154,17 @@ def add_borrow():
         return render_template('admin/admin_login.html')
 
     if request.method == "POST":
-        new_nomor_induk = request.form.get("nim")
-        new_book_title = request.form.get("book")
-        new_borrowing_date = request.form.get("borrowing-date")
-        new_due_date = request.form.get("due-date")
-        new_return_date = request.form.get("returning-date")
-        new_fine = request.form.get("fine")
+        new_nomor_induk = request.form["nim"]
+        new_book_id = request.form["book"]
+        new_borrowing_date = request.form["borrowing-date"]
+        
+        # Calculate due date as 2 weeks (14 days) after borrowing date
+        borrowing_date = datetime.strptime(new_borrowing_date, '%Y-%m-%d')  # Convert to a datetime object
+        new_due_date = borrowing_date + timedelta(days=14)  # Add 14 days to the borrowing date
 
-        book = Book.query.filter(
-            Book.title == new_book_title
-        ).first()
-
-        if book:
-            new_book_id = book.book_id
 
         new_book_borrowing = BookBorrowing(book_id=new_book_id, borrowing_date=new_borrowing_date, 
-                                            due_date=new_due_date, return_date=new_return_date, 
-                                            fine=new_fine, nomor_induk=new_nomor_induk)
+                                            due_date=new_due_date, nomor_induk=new_nomor_induk)
 
         db.session.add(new_book_borrowing)
         db.session.commit()
@@ -181,19 +184,12 @@ def edit_borrow(id):
     ).first()
 
     if request.method == "POST":
-        new_nomor_induk = request.form.get("nim")
-        new_book_title = request.form.get("book")
-        new_borrowing_date = request.form.get("borrowing-date")
-        new_due_date = request.form.get("due-date")
-        new_return_date = request.form.get("returning-date")
+        new_nomor_induk = book_borrowing.nomor_induk
+        new_book_id = request.form["book"]
+        new_borrowing_date = request.form["borrowing-date"]
+        new_due_date = request.form["due-date"]
+        new_return_date = request.form["returning-date"]
         new_fine = request.form.get("fine")
-
-        book = Book.query.filter(
-            Book.title == new_book_title
-        ).first()
-
-        if book:
-            new_book_id = book.book_id
 
         if book_borrowing:
             book_borrowing.book_id = new_book_id
@@ -219,7 +215,7 @@ def delete_borrow(id):
     ).first()
 
     if book_borrowing:
-        book_borrowing.delete()
+        db.session.delete(book_borrowing)
         db.session.commit()
 
     return redirect(url_for('admin.admin_borrow', id=id))
@@ -235,77 +231,11 @@ def admin_deposit():
     if not session['logged_in']:
         return render_template('admin/admin_login.html')
 
-    deposits = PrinterBalanceDeposit.query.all()
+    deposits = PrinterBalanceDeposit.query.filter_by(
+        status="Pending"
+        ).all()
 
     return render_template('admin/deposit_handler.html', deposits=deposits)
-
-# @admin_bp.route("/add-book", methods=["GET", "POST"])
-# def add_book():
-#     if 'logged_in' not in session:
-#         return render_template('admin/admin_login.html')
-    
-#     if not session['logged_in']:
-#         return render_template('admin/admin_login.html')
-
-#     if request.method == "POST":
-#         new_title = request.form.get("title")
-#         new_book_cover = request.form.get("cover")
-#         new_writer = request.form.get("author")
-#         new_description = request.form.get("description")
-
-#         new_book = Book(title=new_title, book_cover=new_book_cover, writer=new_writer, 
-#                         description=new_description, status="Available")
-
-#         db.session.add(new_book)
-#         db.session.commit()
-
-#     return redirect(url_for('admin.admin_book'))
-
-# @admin_bp.route("/edit-book/<path:title>/<int:book_id>", methods=["GET", "POST"])
-# def edit_book(title, book_id):
-#     if 'logged_in' not in session:
-#         return render_template('admin/admin_login.html')
-    
-#     if not session['logged_in']:
-#         return render_template('admin/admin_login.html')
-
-#     book = Book.query.filter_by(
-#         book_id=book_id
-#     ).first()
-
-#     if request.method == "POST":
-#         new_title = request.form.get("title")
-#         new_book_cover = request.form.get("cover")
-#         new_writer = request.form.get("author")
-#         new_description = request.form.get("description")
-
-
-#         if book:
-#             book.title = new_title
-#             book.book_cover = new_book_cover
-#             book.writer = new_writer
-#             book.description = new_description
-#             db.session.commit()
-
-#     return redirect(url_for('admin.admin_book', title=title, id=book_id))
-
-# @admin_bp.route("/delete-book/<path:title>/<int:book_id>")
-# def delete_book(title, book_id):
-#     if 'logged_in' not in session:
-#         return render_template('admin/admin_login.html')
-    
-#     if not session['logged_in']:
-#         return render_template('admin/admin_login.html')
-
-#     book = Book.query.filter_by(
-#         book_id=book_id
-#     ).first()
-
-#     if book:
-#         book.delete()
-#         db.session.commit()
-
-#     return redirect(url_for('admin.admin_book', title=title, id=book_id))
 
 
 # Goods and Rooms

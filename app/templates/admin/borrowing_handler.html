@@ -21,40 +21,98 @@
                         <th scope="col">Option</th>
                     </tr>
                     </thead>
+                    {% if books_borrowing %}
                     <tbody>
+                      {% for book_borrowing in books_borrowing %}
                       <tr>
-                          <th scope="row">1</th>
-                          <td>212100XX1</td>
-                          <td>Dummy Dame 1</td>
-                          <td>Si Kancil Mencari Makan</td>
-                          <td>30/09/2023</td>
-                          <td>07/10/2023</td>
-                          <td>10/10/2023</td>
-                          <td>30.000</td>
-                          <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                          <th scope="row">{{ book_borrowing.id }}</th>
+                          <td>{{ book_borrowing.nomor_induk }}</td>
+                          <td>{{ book_borrowing.user.name }}</td>
+                          <td>{{ book_borrowing.book.title }}</td>
+                          <td>{{ book_borrowing.borrowing_date }}</td>
+                          <td>{{ book_borrowing.due_date }}</td>
+                          <td>{{ book_borrowing.return_date }}</td>
+                          <td>{{ book_borrowing.fine }}</td>
+                          <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#bookborrowing{{book_borrowing.id}}editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#bookborrowing{{book_borrowing.id}}deleteModal" type="button">Delete</button></td>
                       </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>212100XX1</td>
-                        <td>Dummy Dame 2</td>
-                        <td>Si Kancil Mencari Buah</td>
-                        <td>01/10/2023</td>
-                        <td>08/10/2023</td>
-                        <td>08/10/2023</td>
-                        <td>0</td>
-                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>212100XX1</td>
-                        <td>Dummy Dame 3</td>
-                        <td>Si Kancil Mencari Sayur</td>
-                        <td>01/10/2023</td>
-                        <td>08/10/2023</td>
-                        <td>08/10/2023</td>
-                        <td>0</td>
-                        <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                      </tr>
+                      <div class="modal fade" id="bookborrowing{{book_borrowing.id}}editModal" tabindex="-1" aria-labelledby="bookborrowing{{book_borrowing.id}}editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="bookborrowing{{book_borrowing.id}}editModalLabel">Edit Borrowing Data</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form
+                                action="/edit-borrowing-handler/{{ book_borrowing.id }}"
+                                method="POST"
+                                enctype="multipart/form-data"
+                              >
+                                <div class="mb-3">
+                                    <label for="nim" class="form-label">User</label>
+                                    <select class="form-select" name="nim" id="nim" disabled>
+                                        <option value="{{ book_borrowing.nomor_induk }}">{{ book_borrowing.user.name }}</option>
+                                    </select>
+                                </div>    
+                                <div class="mb-3">                    
+                                  <label for="book" class="form-label">Book Title</label>
+                                  <select class="form-select" name="book" id="book">
+                                    {% if books %}
+                                    {% for book in books %}
+                                      <option value="{{ book.book_id }}" {% if book.book_id == book_borrowing.book_id %}selected{% endif %}>
+                                        {{ book.title }}
+                                      </option>
+                                    {% endfor %}
+                                    {% endif %}
+                                  </select>
+                                </div>   
+                                <div class="mb-3">
+                                    <label for="borrowing-date" class="form-label">Borrowing Date</label>
+                                    <input type="date" name="borrowing-date" value="{{ book_borrowing.borrowing_date }}" class="form-control" id="borrowing-date">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="due-date" class="form-label">Due Date</label>
+                                  <input type="date" name="due-date" value="{{ book_borrowing.due_date }}" class="form-control" id="due-date">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="returning-date" class="form-label">Returning Date</label>
+                                  <input type="date" name="returning-date" value="{{ book_borrowing.return_date }}" class="form-control" id="returning-date">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="fine" class="form-label">Fine (Rp)</label>
+                                  <input type="number"value="{{ book_borrowing.fine }}"  class="form-control" id="fine">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-success">Save</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  
+                      <div class="modal fade" id="bookborrowing{{book_borrowing.id}}deleteModal" tabindex="-1" aria-labelledby="bookborrowing{{book_borrowing.id}}deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="bookborrowing{{book_borrowing.id}}deleteModalLabel">Delete Borrowing Data</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p fw-normal>Are you sure want to delete {{ book_borrowing.user.name }}'s borrowing data?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="/delete-borrowing-handler/{{ book_borrowing.id }}">
+                                <button type="button" class="btn btn-danger">Yes, Delete this data</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                      {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -68,109 +126,41 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form>
+              <form
+                action="/add-borrowing-handler"
+                method="POST"
+                enctype="multipart/form-data"
+              >
                   <div class="mb-3">
-                      <label for="nim" class="form-label">NIM</label>
-                      <select class="form-select" id="nim">
-                          <option value="nim1">NIM 1</option>
-                          <option value="nim2">NIM 2</option>
-                          <option value="nim3">NIM 3</option>
+                      <label for="nim" class="form-label">User</label>
+                      <select name="nim" class="form-select" id="nim">
+                        {% if users %}
+                        {% for user in users %}
+                          <option value="{{ user.nomor_induk }}">{{ user.name }}</option>
+                        {% endfor %}
+                        {% endif %}
                       </select>
                   </div>    
                   <div class="mb-3">                    
                     <label for="book" class="form-label">Book Title</label>
-                    <select class="form-select" id="book">
-                        <option value="book1">book 1</option>
-                        <option value="book2">book 2</option>
-                        <option value="book3">book 3</option>
+                    <select name="book" class="form-select" id="book">
+                      {% if books %}
+                      {% for book in books %}
+                        <option value="{{ book.book_id }}">{{ book.title }}</option>
+                      {% endfor %}
+                      {% endif %}
                     </select>
                   </div>   
                   <div class="mb-3">
                       <label for="borrowing-date" class="form-label">Borrowing Date</label>
-                      <input type="date" class="form-control" id="borrowing-date">
+                      <input type="date" class="form-control" id="borrowing-date" name="borrowing-date">
+                  </div>   
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Add</button>
                   </div>
-                  <div class="mb-3">
-                      <label for="status" class="form-label">Status</label>
-                      <select class="form-select" id="status">
-                          <option value="status1">Pending</option>
-                          <option value="status2">Done</option>
-                      </select>
-                  </div>    
                 </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success">Add</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="editModalLabel">Edit Borrowing Data</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                  <label for="nim" class="form-label">NIM</label>
-                  <select class="form-select" id="nim" disabled>
-                      <option value="nim1">NIM 1</option>
-                      <option value="nim2">NIM 2</option>
-                      <option value="nim3">NIM 3</option>
-                  </select>
-              </div>    
-              <div class="mb-3">                    
-                <label for="book" class="form-label">Book Title</label>
-                <select class="form-select" id="book">
-                    <option value="book1">book 1</option>
-                    <option value="book2">book 2</option>
-                    <option value="book3">book 3</option>
-                </select>
-              </div>   
-              <div class="mb-3">
-                  <label for="borrowing-date" class="form-label">Borrowing Date</label>
-                  <input type="date" class="form-control" id="borrowing-date">
-              </div>
-              <div class="mb-3">
-                <label for="due-date" class="form-label">Due Date</label>
-                <input type="date" class="form-control" id="due-date">
-              </div>
-              <div class="mb-3">
-                <label for="returning-date" class="form-label">Returning Date</label>
-                <input type="date" class="form-control" id="returning-date">
-              </div>
-              <div class="mb-3">
-                <label for="fine" class="form-label">Fine (Rp)</label>
-                <input type="number" class="form-control" id="fine">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success">Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Borrowing Data</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <p fw-normal>Are you sure want to delete [NIM]'s borrowing data?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger">Yes, Delete this data</button>
-          </div>
+            </div>
         </div>
       </div>
     </div>

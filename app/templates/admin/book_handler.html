@@ -24,7 +24,9 @@
                     <tr>
                         <th scope="row">{{ book.book_id }}</th>
                         <td>{{ book.title|limit_text(25) }}</td>
-                        <td>{{ book.book_cover }}</td>
+                        <td>
+                          <img src="data:image/jpeg;base64,{{ book.book_cover }}">
+                        </td>
                         <td>{{ book.writer|limit_text(20) }}</td>
                         <td class="text-wrap overflow-hidden" style="width: 30rem; height: 6rem;">{{ book.description|limit_text(50) }}</td>
                         <td>{{ book.genre.name }}</td>
@@ -50,31 +52,33 @@
                                   </div>
                                   <div class="mb-3">
                                       <label for="cover" class="form-label">Book Cover</label>
-                                      <input type="file" value="{{ book.book_cover}}" class="form-control" id="cover">
+                                      <input type="file" name="cover" class="form-control" id="cover">
+                                      <input type="hidden" name="before_cover" value="{{ book.book_cover }}">
                                   </div>
                                   <div class="mb-3">
                                       <label for="author" class="form-label">Author</label>
-                                      <input type="text" value="{{ book.writer }}" class="form-control" id="author">
+                                      <input type="text" name="author" value="{{ book.writer }}" class="form-control" id="author">
                                   </div>
                                   <div class="mb-3">                    
                                     <label for="genre" class="form-label">Genre</label>
-                                    <select for="genre" value="{{ book.genre.name }}" class="form-select" id="book" name="genre">
-                                        <option value="3">Biography</option>
-                                        <option value="5">Essays</option>
-                                        <option value="1">Novel</option>
-                                        <option value="2">Religion & Spirituality</option>
-                                        <option value="4">Science & Technology</option>
+                                    <select name="genre" class="form-select" id="book">
+                                      <option value="3" {% if book.genre.name == 'Biography' %}selected{% endif %}>Biography</option>
+                                      <option value="5" {% if book.genre.name == 'Essays' %}selected{% endif %}>Essays</option>
+                                      <option value="1" {% if book.genre.name == 'Novel' %}selected{% endif %}>Novel</option>
+                                      <option value="2" {% if book.genre.name == 'Religion & Spirituality' %}selected{% endif %}>Religion & Spirituality</option>
+                                      <option value="4" {% if book.genre.name == 'Science & Technology' %}selected{% endif %}>Science & Technology</option>
                                     </select>
                                   </div>   
                                   <div class="mb-3">
                                       <label for="description">Description</label>
-                                      <textarea class="form-control" id="floatingTextarea">{{ book.description }}</textarea>
+                                      <textarea name="description" class="form-control" id="floatingTextarea">{{ book.description }}</textarea>
+                                      <input type="hidden" name="before_description" value="{{ book.description }}">
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Save</button>
                                   </div>
                                 </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success">Save</button>
                           </div>
                         </div>
                       </div>
@@ -121,7 +125,7 @@
                 >
                     <div class="mb-3">
                       <label for="title" class="form-label">Title</label>
-                      <input name="title" type="text" class="form-control" id="title" name="title">
+                      <input name="title" type="text" class="form-control" id="title" name="title" required>
                     </div>
                     <div class="mb-3">
                         <label for="cover" class="form-label">Book Cover</label>
@@ -129,11 +133,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="author" class="form-label">Author</label>
-                        <input name="author" type="text" class="form-control" id="author">
+                        <input name="author" type="text" class="form-control" id="author" required>
                     </div>
                     <div class="mb-3">                    
                       <label for="genre" class="form-label">Genre</label>
-                      <select for="genre" class="form-select" id="book" name="genre">
+                      <select for="genre" class="form-select" id="book" name="genre" required>
                           <option value="3">Biography</option>
                           <option value="5">Essays</option>
                           <option value="1">Novel</option>
