@@ -87,6 +87,9 @@ def admin_borrow():
     books_borrowing = BookBorrowing.query.all()
     users = User.query.all()
     books = Book.query.all()
+    available_books = Book.query.filter_by(
+                        status="Available"
+                        ).all()
 
     # Calculate and update fines for overdue records
     today = datetime.utcnow().date()
@@ -98,7 +101,7 @@ def admin_borrow():
             borrowing.fine = fine
             db.session.commit()
 
-    return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing, users=users, books=books)
+    return render_template('admin/borrowing_handler.html', books_borrowing=books_borrowing, users=users, books=books, available_books=available_books)
 
 @admin_bp.route("/add-borrowing-handler", methods=["GET", "POST"])
 def add_borrow():
@@ -120,6 +123,12 @@ def add_borrow():
 
         new_book_borrowing = BookBorrowing(book_id=new_book_id, borrowing_date=new_borrowing_date, 
                                             due_date=new_due_date, nomor_induk=new_nomor_induk)
+
+        book = Book.query.filter_by(
+            book_id=new_book_id
+        ).first()
+
+        book.status = "Borrowed"
 
         db.session.add(new_book_borrowing)
         db.session.commit()
@@ -147,12 +156,24 @@ def edit_borrow(id):
         new_fine = request.form.get("fine")
 
         if book_borrowing:
+
+            if new_book_id != book_borrowing.book_id:
+                book_borrowing.book.status = "Available"
+                book = Book.query.filter_by(
+                                    book_id=new_book_id
+                                    ).first()
+                book.status = "Borrowed"
+
             book_borrowing.book_id = new_book_id
             book_borrowing.borrowing_date = new_borrowing_date
             book_borrowing.due_date = new_due_date
-            book_borrowing.return_date = new_return_date
             book_borrowing.fine = new_fine
             book_borrowing.nomor_induk =new_nomor_induk
+
+            if new_return_date != '':
+                book_borrowing.return_date = new_return_date
+                book_borrowing.book.status = "Available"
+
             db.session.commit()
 
     return redirect(url_for('admin.admin_borrow', id=id))

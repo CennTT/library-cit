@@ -25,7 +25,7 @@
                     <tbody>
                       {% for book_borrowing in books_borrowing %}
                       <tr>
-                          <th scope="row">{{ book_borrowing.id }}</th>
+                          <th scope="row">{{ loop.index }}</th>
                           <td>{{ book_borrowing.nomor_induk }}</td>
                           <td>{{ book_borrowing.user.name }}</td>
                           <td>{{ book_borrowing.book.title|limit_text(25) }}</td>
@@ -57,13 +57,14 @@
                                 <div class="mb-3">                    
                                   <label for="book" class="form-label">Book Title</label>
                                   <select class="form-select" name="book" id="book">
-                                    {% if books %}
-                                    {% for book in books %}
-                                      <option value="{{ book.book_id }}" {% if book.book_id == book_borrowing.book_id %}selected{% endif %}>
-                                        {{ book.title }}
+                                      <option value="{{ book_borrowing.book_id }}" selected>{{ book_borrowing.book.title }}</option>
+                                      {% if available_books %}
+                                      {% for available_book in available_books %}
+                                      <option value="{{ available_book.book_id }}">
+                                        {{ available_book.title }}
                                       </option>
-                                    {% endfor %}
-                                    {% endif %}
+                                      {% endfor %}
+                                      {% endif %}
                                   </select>
                                 </div>   
                                 <div class="mb-3">
@@ -136,7 +137,9 @@
                       <select name="nim" class="form-select" id="nim" required>
                         {% if users %}
                         {% for user in users %}
-                          <option value="{{ user.nomor_induk }}">{{ user.name }}</option>
+                          <option value="{{ user.nomor_induk }}">
+                            {{ user.name }}
+                          </option>
                         {% endfor %}
                         {% endif %}
                       </select>
@@ -144,9 +147,11 @@
                   <div class="mb-3">                    
                     <label for="book" class="form-label">Book Title</label>
                     <select name="book" class="form-select" id="book" required>
-                      {% if books %}
-                      {% for book in books %}
-                        <option value="{{ book.book_id }}">{{ book.title }}</option>
+                      {% if available_books %}
+                      {% for available_book in available_books %}
+                        <option value="{{ available_book.book_id }}">
+                          {{ available_book.title }}
+                        </option>
                       {% endfor %}
                       {% endif %}
                     </select>
