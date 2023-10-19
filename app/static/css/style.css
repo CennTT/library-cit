@@ -213,6 +213,7 @@
 	.book-info{
 		display: flex;
 	}
+	
 	/* ====================== Responsive Design ========================== */
 	@media (max-width: 991px) {
 		.sidenav {

@@ -12,12 +12,6 @@
 				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
-			<select name="Genre" id="genreDropdown" class="btn btn-secondary dropdown-toggle p-2">
-				<option value="">Genre</option>
-				{% for item in genre %}
-					<option value="{{ item.genre_id }}">{{ item.name }}</option>
-				{% endfor %}
-			</select>
 		</div>
 	</div>
 
