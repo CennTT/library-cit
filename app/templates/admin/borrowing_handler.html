@@ -28,7 +28,7 @@
                           <th scope="row">{{ book_borrowing.id }}</th>
                           <td>{{ book_borrowing.nomor_induk }}</td>
                           <td>{{ book_borrowing.user.name }}</td>
-                          <td>{{ book_borrowing.book.title }}</td>
+                          <td>{{ book_borrowing.book.title|limit_text(25) }}</td>
                           <td>{{ book_borrowing.borrowing_date }}</td>
                           <td>{{ book_borrowing.due_date }}</td>
                           <td>{{ book_borrowing.return_date }}</td>
@@ -133,7 +133,7 @@
               >
                   <div class="mb-3">
                       <label for="nim" class="form-label">User</label>
-                      <select name="nim" class="form-select" id="nim">
+                      <select name="nim" class="form-select" id="nim" required>
                         {% if users %}
                         {% for user in users %}
                           <option value="{{ user.nomor_induk }}">{{ user.name }}</option>
@@ -143,7 +143,7 @@
                   </div>    
                   <div class="mb-3">                    
                     <label for="book" class="form-label">Book Title</label>
-                    <select name="book" class="form-select" id="book">
+                    <select name="book" class="form-select" id="book" required>
                       {% if books %}
                       {% for book in books %}
                         <option value="{{ book.book_id }}">{{ book.title }}</option>
@@ -153,7 +153,7 @@
                   </div>   
                   <div class="mb-3">
                       <label for="borrowing-date" class="form-label">Borrowing Date</label>
-                      <input type="date" class="form-control" id="borrowing-date" name="borrowing-date">
+                      <input type="date" class="form-control" id="borrowing-date" name="borrowing-date" required>
                   </div>   
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

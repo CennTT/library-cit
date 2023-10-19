@@ -14,32 +14,80 @@
                       <th scope="col">No</th>
                       <th scope="col">NIM</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Password</th>
                       <th scope="col">Email</th>
                       <th scope="col">Option</th>
                   </tr>
                   </thead>
+                  {% if users %}
                   <tbody>
+                    {% for user in users %}
                   <tr>
-                      <th scope="row">1</th>
-                      <td>212100XX0</td>
-                      <td>Vincent</td>
-                      <td>dummy1@gmail.com</td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
+                      <th scope="row">{{ loop.index }}</th>
+                      <td>{{ user.nomor_induk }}</td>
+                      <td>{{ user.name }}</td>
+                      <td>{{ user.password }}</td>
+                      <td>{{ user.email }}</td>
+                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#user{{user.nomor_induk}}editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#user{{user.nomor_induk}}deleteModal" type="button">Delete</button></td>
                   </tr>
-                  <tr>
-                      <th scope="row">2</th>
-                      <td>212100XX1</td>
-                      <td>Grace</td>
-                      <td>dummy2@gmail.com</td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                  </tr>
-                  <tr>
-                      <th scope="row">3</th>
-                      <td>212100XX3</td>
-                      <td>Elisabeth</td>
-                      <td>dummy3@gmail.com</td>
-                      <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button></td>
-                  </tr>
+                  <div class="modal fade" id="user{{user.nomor_induk}}editModal" tabindex="-1" aria-labelledby="user{{user.nomor_induk}}editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="user{{user.nomor_induk}}editModalLabel">Edit User</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form
+                              method="POST"
+                              action="/edit-user/{{ user.nomor_induk }}"
+                            >
+                                <div class="mb-3">
+                                  <label for="nim" class="form-label">NIM</label>
+                                  <input type="text" value="{{ user.nomor_induk }}" class="form-control" id="nim" name="nim" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" value="{{ user.name }}" class="form-control" id="name" name="name">
+                                </div>
+                              <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="text" value="{{ user.password }}" class="form-control" id="password" name="password">
+                            </div>
+                                <div class="mb-3">
+                                  <label for="email" class="form-label">Email</label>
+                                  <input type="email" value="{{ user.email }}" class="form-control" id="email" name="email">
+                              </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-success">Save</button>
+                                </div>
+                              </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+                  <div class="modal fade" id="user{{user.nomor_induk}}deleteModal" tabindex="-1" aria-labelledby="user{{user.nomor_induk}}deleteModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="user{{user.nomor_induk}}deleteModal">Delete User</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p fw-normal>Are you sure want to delete this user "{{ user.name }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <a href="/delete-user/{{ user.nomor_induk }}">
+                            <button type="button" class="btn btn-danger">Yes, Delete this book</button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                  {% endif %}
                   </tbody>
               </table>
           </div>
@@ -53,75 +101,34 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form>
+              <form
+                method="POST"
+                action="/add-user"
+              >
                   <div class="mb-3">
                     <label for="nim" class="form-label">NIM</label>
-                    <input type="text" class="form-control" id="nim">
+                    <input type="text" name="nim" class="form-control" id="nim" required>
                   </div>
                   <div class="mb-3">
                       <label for="name" class="form-label">Name</label>
-                      <input type="text" class="form-control" id="name">
+                      <input type="text" name="name" class="form-control" id="name" required>
                   </div>
                   <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="text" name="password" class="form-control" id="password" required>
+                </div>
+                  <div class="mb-3">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email">
+                      <input type="email" name="email" class="form-control" id="email" required>
                   </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Add</button>
+                  </div>                  
                 </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success">Add</button>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="editModalLabel">Edit User</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <form>
-                  <div class="mb-3">
-                    <label for="nim" class="form-label">NIM</label>
-                    <input type="text" class="form-control" id="nim">
-                  </div>
-                  <div class="mb-3">
-                      <label for="name" class="form-label">Name</label>
-                      <input type="text" class="form-control" id="name">
-                  </div>
-                  <div class="mb-3">
-                      <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email">
-                  </div>
-                </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success">Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete User</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <p fw-normal>Are you sure want to delete this user "[User Name]"?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger">Yes, Delete this book</button>
-          </div>
-        </div>
-      </div>
 </div>
 {% endblock %}
