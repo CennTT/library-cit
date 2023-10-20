@@ -346,7 +346,7 @@ def show_image(image_id):
     else:
         image_data = None
 
-    return render_template('nonadmin/show_image.html', image_data=image_data)
+    return render_template('show_image.html', image_data=image_data)
 
 
 @user_bp.route("/borrow-book")
