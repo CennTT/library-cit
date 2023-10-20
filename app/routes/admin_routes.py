@@ -52,9 +52,6 @@ def admin_book():
         
     return render_template('admin/book_handler.html', books=books)
 
-
-
-
 @admin_bp.route("/delete-book/<path:title>/<int:book_id>")
 def delete_book(title, book_id):
     if 'logged_in' not in session:
@@ -84,7 +81,9 @@ def admin_borrow():
     if not session['logged_in']:
         return render_template('admin/admin_login.html')
     
-    books_borrowing = BookBorrowing.query.all()
+    books_borrowing = BookBorrowing.query.filter(
+                        BookBorrowing.return_date.is_(None)
+                        ).all()
     users = User.query.all()
     books = Book.query.all()
     available_books = Book.query.filter_by(
