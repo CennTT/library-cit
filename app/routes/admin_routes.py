@@ -191,6 +191,7 @@ def delete_borrow(id):
     ).first()
 
     if book_borrowing:
+        book_borrowing.book.status = "Available"
         db.session.delete(book_borrowing)
         db.session.commit()
 
