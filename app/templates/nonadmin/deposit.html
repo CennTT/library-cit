@@ -35,7 +35,7 @@
                           <td>{{ deposit.date.strftime('%d/%m/%Y') }}</td>
                           <td>{{ "{:,.0f}".format(deposit.deposited_balance if deposit.deposited_balance is defined else 0) }}</td>
                           <td>
-                              <a href="{{ url_for('user.show_image', image_id=deposit.deposit_id) }}" target="_blank">Open File</a>
+                              <a href="{{ url_for('show_image', image_id=deposit.deposit_id) }}" target="_blank">Open File</a>
                           </td>
                           <td>{{ deposit.status }}</td>
                       </tr>

@@ -25,7 +25,9 @@
 						<td>{{ item.date}}</td>
 						<td>{{ item.nomor_induk}}</td>
 						<td>{{ item.deposited_balance }}</td>
-						<td><a href="">Open File</a></td>
+						<td>
+                            <a href="{{ url_for('show_image', image_id=item.deposit_id) }}" target="_blank">Open File</a>
+                        </td>
 						<td>{{ item.status }}</td>
 						<td>
                             <a href="/accept-deposit/{{item.deposit_id}}/{{item.nomor_induk}}">

@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 import secrets
 from flask import Flask, request, render_template, redirect, url_for, session, Blueprint
-from models import Book, db
+from models import Book, PrinterBalanceDeposit, db
 from routes.admin_routes import admin_bp
 from routes.user_routes import user_bp
 from flask_migrate import Migrate
@@ -106,3 +106,21 @@ def edit_book(title, book_id):
             db.session.commit()
 
     return redirect(url_for('admin.admin_book', title=title, id=book_id))
+
+
+@app.route("/show-image/<int:image_id>")
+def show_image(image_id):
+    if 'logged_in' not in session:
+        return render_template('nonadmin/login.html')
+
+    if not session['logged_in']:
+        return render_template('nonadmin/login.html')
+
+    deposit = PrinterBalanceDeposit.query.get(image_id)
+
+    if deposit:
+        image_data = base64.b64encode(deposit.proof).decode('utf-8')
+    else:
+        image_data = None
+
+    return render_template('show_image.html', image_data=image_data)

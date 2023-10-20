@@ -23,7 +23,7 @@ def login():
         if user.password != password:
             return render_template('nonadmin/login.html', error='Invalid username or password.')
 
-        session['logged_in'] = True
+        session['user_logged_in'] = True
         session['name'] = user.name
         session['nim'] = nim
         return redirect(url_for('user.homepage'))
@@ -38,10 +38,10 @@ def logout():
 
 @user_bp.route("/")
 def homepage():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     books = Book.query.all() 
@@ -66,10 +66,10 @@ def homepage():
 
 @user_bp.route("/search-book", methods=["POST"])
 def search_book():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     book_name = request.form["book_name"]
@@ -100,10 +100,10 @@ def search_book():
 
 @user_bp.route("/book/<int:genre_id>")
 def genre_page(genre_id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     books = Book.query.filter_by(genre_id=genre_id) 
@@ -130,10 +130,10 @@ def genre_page(genre_id):
 
 @user_bp.route("/book/<path:title>/<int:id>")
 def book_details(title, id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     book = Book.query.get(id)
@@ -183,10 +183,10 @@ def book_details(title, id):
 
 @user_bp.route("/borrow/<path:title>/<int:book_id>")
 def borrow(title, book_id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     user_id = session.get('nim')
@@ -214,10 +214,10 @@ def borrow(title, book_id):
 
 @user_bp.route("/edit-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
 def edit_review(title, book_id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
 
     user_review = RatingReview.query.filter_by(
@@ -239,10 +239,10 @@ def edit_review(title, book_id):
 
 @user_bp.route("/add-review/<path:title>/<int:book_id>", methods=["GET", "POST"])
 def add_review(title, book_id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     if request.method == 'GET':
@@ -265,10 +265,10 @@ def add_review(title, book_id):
 
 @user_bp.route("/deposit")
 def printer_balance():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     id = session.get('nim')
@@ -288,10 +288,10 @@ def printer_balance():
 
 @user_bp.route("/top-up", methods=["GET", "POST"])
 def top_up():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
 
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
 
     id = session.get('nim')
@@ -320,10 +320,10 @@ def top_up():
 
 @user_bp.route("/procedures")
 def procedures():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
     
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     account_name = session.get('name')
@@ -333,10 +333,10 @@ def procedures():
 
 @user_bp.route("/show-image/<int:image_id>")
 def show_image(image_id):
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
 
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
 
     deposit = PrinterBalanceDeposit.query.get(image_id)
@@ -351,10 +351,10 @@ def show_image(image_id):
 
 @user_bp.route("/borrow-book")
 def borrow_book():
-    if 'logged_in' not in session:
+    if 'user_logged_in' not in session:
         return render_template('nonadmin/login.html')
 
-    if not session['logged_in']:
+    if not session['user_logged_in']:
         return render_template('nonadmin/login.html')
     
     nomor_induk = session.get("nim")
