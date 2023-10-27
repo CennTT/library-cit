@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2023 at 12:52 PM
+-- Generation Time: Oct 27, 2023 at 01:39 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -217,9 +217,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`nomor_induk`, `name`, `password`, `email`) VALUES
-('212100113', 'Vincent Waiman', 'cen', ''),
-('212100120', 'Grace Theofie', 'acy', ''),
-('212100693', 'Elisabeth Violina', 'beth', '');
+('212100113', 'Vincent Waiman', 'cenn', 'vwaiman13@students.calvin.ac.id'),
+('212100120', 'Grace Theofie', 'acy', 'gtheofie20@students.calvin.ac.id'),
+('212100693', 'Elisabeth Violina', 'beth', 'eviolina93@students.calvin.ac.id');
 
 --
 -- Indexes for dumped tables
