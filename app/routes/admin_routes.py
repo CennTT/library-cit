@@ -16,6 +16,7 @@ def admin_login():
     if request.method == 'GET':
         return render_template('admin/admin_login.html')
     elif request.method == 'POST':
+        session.clear()
         nim = request.form['nim']
         password = request.form['password']
     

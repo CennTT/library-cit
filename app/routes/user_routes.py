@@ -4,6 +4,8 @@ from sqlalchemy import and_, func
 from flask import Flask, flash, request, render_template, redirect, url_for, session, Blueprint
 from models import BookBorrowing, PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Genre
 
+from app import admin_bp
+
 
 user_bp = Blueprint('user', __name__)
 
@@ -12,6 +14,7 @@ def login():
     if request.method == 'GET':
         return render_template('nonadmin/login.html')
     elif request.method == 'POST':
+        session.clear()
         nim = request.form['nim']
         password = request.form['password']
         
