@@ -7,23 +7,27 @@
 - Grace Theofie
 - Vincent Waiman
 
-Installation
+__Installation__
 1. Clone the project repository to your local machine
 2. Navigate to the project directory: 
-    cd library-cit
+    `cd library-cit`
 3. Create a virtual environment to isolate project dependencies. You can choose a different name for the virtual environment if you prefer: 
-    python -m venv venv
+    `python -m venv venv`
 4. Activate the virtual environment:
     On Windows:
-        venv\Scripts\activate
+
+    `venv\Scripts\activate`
 
     On macOS and Linux:
-        source venv/bin/activate
+
+    `source venv/bin/activate`
+
 5. Install project dependencies from requirements.txt:
-    pip install -r requirements.txt
+
+    `pip install -r requirements.txt`
 
 
-Running the Application
+__Running the Application__
 After setting up the virtual environment and installing dependencies, you can run the Python application using the following command:
 
-    python app.py
+    `python app.py`
