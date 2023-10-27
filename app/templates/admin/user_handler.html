@@ -13,7 +13,6 @@
                       <th scope="col">No</th>
                       <th scope="col">NIM</th>
                       <th scope="col">Name</th>
-                      <th scope="col">Password</th>
                       <th scope="col">Email</th>
                       <th scope="col">Option</th>
                   </tr>
@@ -25,7 +24,6 @@
                       <th scope="row">{{ loop.index }}</th>
                       <td>{{ user.nomor_induk }}</td>
                       <td>{{ user.name }}</td>
-                      <td>{{ user.password }}</td>
                       <td>{{ user.email }}</td>
                       <td class="gap-5"><button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#user{{user.nomor_induk}}editModal" type="button">Edit</button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#user{{user.nomor_induk}}deleteModal" type="button">Delete</button></td>
                   </tr>
