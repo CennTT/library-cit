@@ -7,7 +7,7 @@
 - Grace Theofie
 - Vincent Waiman
 
-## Installation
+Installation
 1. Clone the project repository to your local machine
 2. Navigate to the project directory: 
     cd library-cit
@@ -23,7 +23,7 @@
     pip install -r requirements.txt
 
 
-## Running the Application
+Running the Application
 After setting up the virtual environment and installing dependencies, you can run the Python application using the following command:
 
     python app.py
