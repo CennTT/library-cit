@@ -1,6 +1,6 @@
 import base64
 import datetime
-from sqlalchemy import func
+from sqlalchemy import and_, func
 from flask import Flask, flash, request, render_template, redirect, url_for, session, Blueprint
 from models import BookBorrowing, PrinterBalanceDeposit, db, User, Book, RatingReview, PrinterBalance, Genre
 
@@ -46,6 +46,7 @@ def homepage():
     
     books = Book.query.all() 
     genres = Genre.query.all()
+    nim = session.get('nim')
     
     account_name = session.get('name')
     
@@ -60,8 +61,15 @@ def homepage():
         genre = Genre.query.get(book.genre_id)  
         genre_name = genre.name if genre else None
         book.genre_name = genre_name 
+        
+    borrowed_books = db.session.query(BookBorrowing, Book.title).join(Book, and_(
+                        BookBorrowing.book_id == Book.book_id,
+                        BookBorrowing.nomor_induk == nim,
+                        BookBorrowing.return_date == None
+                        )).all()
+    print(borrowed_books)
 
-    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres)
+    return render_template('nonadmin/index.html', books=books, average_ratings=average_ratings, account_name=account_name, genre=genres, borrowed_books=borrowed_books)
 
 
 @user_bp.route("/search-book", methods=["POST"])
